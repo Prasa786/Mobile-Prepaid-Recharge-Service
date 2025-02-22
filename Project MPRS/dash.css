@@ -1,0 +1,99 @@
+
+body {
+    background: #EAE7DC;
+    font-family: 'Arial', sans-serif;
+}
+
+
+.navbar {
+    background: linear-gradient(to right, #0C1D13, #1A3C34);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+    block-size: 40px;
+}
+
+.navbar-nav .nav-link {
+    color: #EAE7DC !important;
+    font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #B68D40 !important;
+}
+
+
+.card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    color: #0C1D13;
+    font-weight: bold;
+}
+
+
+.btn-primary {
+    background: #B68D40;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background: #617A55;
+}
+
+.btn-secondary {
+    background: #617A55;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background: #B68D40;
+}
+
+
+.progress {
+    block-size: 20px;
+    border-radius: 10px;
+    background: #EAE7DC;
+}
+
+.progress-bar {
+    background: #B68D40;
+    border-radius: 10px;
+}
+
+
+.footer {
+    background: #222C25;
+    color: #EAE7DC;
+    padding: 40px 0;
+}
+
+.footer h3 {
+    color: #B68D40;
+    margin-block-end: 20px;
+}
+
+.footer a {
+    color: #EAE7DC;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #B68D40;
+}

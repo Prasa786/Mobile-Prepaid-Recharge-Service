@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoltMobi - Payment</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #0C1D13; 
+            color: #EAE7DC; 
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .navbar {
+            background-color: #1A3C34; 
+        }
+
+        .navbar-brand, .nav-link {
+            color: #EAE7DC !important; 
+        }
+
+        .nav-link:hover {
+            color: #B68D40 !important; 
+        }
+
+        .plan-summary, .payment-summary, .payment-container {
+            background-color: #222C25; 
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #EAE7DC; 
+        }
+
+        .btn-primary {
+            background-color: #B68D40; 
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #9A7636; 
+        }
+
+        .btn-secondary {
+            background-color: #617A55; 
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4A5E43; 
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #617A55; 
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-option:hover {
+            background-color: #1A3C34; 
+        }
+
+        .payment-icon {
+            width: 40px; 
+            height: 40px;
+            margin-right: 10px;
+            object-fit: contain; 
+            border-radius: 5px;
+        }
+
+        .footer {
+            background-color: #1A3C34;
+            color: #EAE7DC;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+
+        .footer-bottom {
+            background-color: #0C1D13; 
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+   
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/212268702.png" alt="VoltMobi Logo" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="plansDropdown" data-toggle="dropdown">Plans</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="RechargePlans.html">Recommended Packs</a>
+                            <a class="dropdown-item" href="RechargePlans.html">Data Plans</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" data-toggle="dropdown">Help</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="faq.html">FAQs</a>
+                            <a class="dropdown-item" href="contact.html">Contact Support</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+   
+    <div class="container mt-5">
+        <h1 class="text-light">Payment Details</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="plan-summary">
+                    <h4 class="mb-4 text-center text-accent">Plan Summary</h4>
+                    <p id="summaryPlanName"></p>
+                    <p id="summaryPrice"></p>
+                    <p id="summaryData"></p>
+                    <p id="summarySms"></p>
+                    <p id="summaryCalls"></p>
+                </div>
+            </div>
+
+   
+            <div class="col-md-6">
+                <div class="payment-summary">
+                    <h4 class="mb-4 text-center text-accent">Payment Summary</h4>
+                    <p id="amountLabel"></p>
+                    <p id="gstlabel"></p>
+                    <hr style="border: #617A55 1px solid;">
+                    <p id="totalLabel"></p>
+                    <hr style="border: #617A55 1px solid;">
+                </div>
+            </div>
+        </div>
+   
+        <div class="payment-container">
+            <h3 class="text-center text-accent">Payment</h3>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="paymentMethod" class="text-light">Select a Payment Method</label>
+                    <select class="form-control" id="paymentMethod" onchange="togglePaymentInputs()">
+                        <option value="" disabled selected>Select a payment method</option>
+                        <option value="upi">UPI</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="netbanking">Net Banking</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
+                </div>
+
+              
+                <div id="paymentOptions" class="mt-4"></div>
+
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-block" id="payButton" disabled>Pay</button>
+                    <button type="button" class="btn btn-secondary btn-block" onclick="window.history.back()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+    
+        <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-accent" id="paymentSuccessModalLabel "style="color: #000;">Payment Successful</h5>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="success-icon-container">
+                            <img src="img/pngegg.png" height="45">
+                        </div>
+                        <p class="success-message text-light">Your payment was successful!</p>
+                        <div class="transaction-details mt-4 text-dark">
+                            <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+                            <p><strong>Date:</strong> <span id="transactionDate"></span></p>
+                            <p><strong>Time:</strong> <span id="transactionTime"></span></p>
+                            <p><strong>Payment Method:</strong> <span id="transactionPaymentMethod"></span></p>
+                            <p><strong>Gift:</strong> <span id="transactionGift"></span></p>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-primary" onclick="redirectToRecharge()">Pay Again</button>
+                            <button class="btn btn-secondary" onclick="redirectToDashboard()">Go to Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section about">
+                <h2>VoltMobi</h2>
+                <p>Your trusted prepaid recharge service for fast, secure, and affordable mobile top-ups.</p>
+            </div>
+            <div class="footer-section quick-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Plans</a></li>
+                    <li><a href="#">Recharge</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section newsletter">
+                <h3>Subscribe</h3>
+                <form action="#">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="text-light">&copy; 2025 Volt Mobi. All rights reserved.</p>
+        </div>
+    </footer>
+
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script src="payment.js"></script>
+</body>
+</html>

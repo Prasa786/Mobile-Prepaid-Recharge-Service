@@ -1,0 +1,151 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | VoltMobi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css" type="text/css">
+    <link rel="icon" href="img/212268702.png" type="image/icon">
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>VoltMobi Admin Dashboard</h1>
+        <nav>
+            <a href="#expiring-plans">Expiring Plans</a>
+            <a href="#recharge-plans">Recharge Plans</a>
+            <a href="#transaction-history">Transaction History</a>
+            <a href="#notifications">Notifications</a>
+            <a href="#support-tickets">Support Tickets</a>
+            <a href="#feedback-reports">Feedback Reports</a>
+            <a href="#analytics">Analytics</a>
+        </nav>
+    </header>
+    <section id="expiring-plans" class="admin-section">
+        <h2>Subscribers with Expiring Plans (Next 3 Days)</h2>
+        <table id="expiringPlansTable">
+            <thead>
+                <tr>
+                    <th>Mobile Number</th>
+                    <th>Current Plan</th>
+                    <th>Expiry Date</th>
+                    <th>Last Recharge Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
+    <section id="recharge-plans" class="admin-section">
+        <h2>Manage Recharge Plans</h2>
+        <button id="addPlanBtn" class="btn-primary">Add New Plan</button>
+        <table id="rechargePlansTable">
+            <thead>
+                <tr>
+                    <th>Plan Name</th>
+                    <th>Price</th>
+                    <th>Validity</th>
+                    <th>Data</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
+    <section id="transaction-history" class="admin-section">
+        <h2>Transaction History</h2>
+        <div class="filters">
+            <input type="date" id="filterDate" placeholder="Filter by Date">
+            <input type="number" id="filterAmount" placeholder="Filter by Amount">
+            <select id="filterPaymentMethod">
+                <option value="">All Payment Methods</option>
+                <option value="UPI">UPI</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+            </select>
+            <button id="applyFiltersBtn" class="btn-primary">Apply Filters</button>
+        </div>
+        <table id="transactionHistoryTable">
+            <thead>
+                <tr>
+                    <th>Plan Name</th>
+                    <th>Recharge Date</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>              
+            </tbody>
+        </table>
+    </section>
+    <section id="notifications" class="admin-section">
+        <h2>Send Notifications</h2>
+        <form id="notificationForm">
+            <textarea id="notificationMessage" placeholder="Enter your message..." required></textarea>
+            <button type="submit" class="btn-primary">Send Notification</button>
+        </form>
+    </section>
+
+   
+    <section id="support-tickets" class="admin-section">
+        <h2>Customer Support Tickets</h2>
+        <table id="supportTicketsTable">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>User Name</th>
+                    <th>Issue</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </section>
+
+   
+    <section id="feedback-reports" class="admin-section">
+        <h2>User Feedback Reports</h2>
+        <table id="feedbackReportsTable">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Feedback</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+        </table>
+    </section>
+
+   
+    <section id="analytics" class="admin-section">
+        <h2>Analytics</h2>
+        <div class="analytics-cards">
+            <div class="card">
+                <h3>Total Subscribers</h3>
+                <p id="totalSubscribers">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Active Plans</h3>
+                <p id="activePlans">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Revenue (This Month)</h3>
+                <p id="monthlyRevenue">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+   
+    <script src="admin.js"></script>
+</body>
+</html> 

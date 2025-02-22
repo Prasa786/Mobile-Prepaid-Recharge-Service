@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { margin-top: 30px; }
+        .card { margin-bottom: 15px; }
+        .no-history { text-align: center; font-size: 18px; color: #888; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Transaction History (Last 6 Months)</h2>
+        <div id="transaction-list"></div>
+        <button class="btn btn-primary mt-3" onclick="goBack()">Back to Home</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+            // If no transactions, generate dummy data
+            if (transactions.length === 0) {
+                console.log("No transactions found! Generating dummy data...");
+                transactions = generateDummyTransactions();
+                localStorage.setItem("transactions", JSON.stringify(transactions));
+            }
+
+            let transactionList = document.getElementById("transaction-list");
+            let now = new Date();
+            let sixMonthsAgo = new Date();
+            sixMonthsAgo.setMonth(now.getMonth() - 6);
+
+            let filteredTransactions = transactions.filter(transaction => {
+                let transactionDate = new Date(transaction.date);
+                return transactionDate >= sixMonthsAgo && transactionDate <= now;
+            });
+
+            if (filteredTransactions.length === 0) {
+                transactionList.innerHTML = "<p class='no-history'>No transactions in the last 6 months.</p>";
+                return;
+            }
+
+            filteredTransactions.forEach(transaction => {
+                let transactionDate = new Date(transaction.date);
+                transactionList.innerHTML += `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${transaction.planName}</h5>
+                            <p class="card-text"><strong>Price:</strong> ${transaction.planPrice}</p>
+                            <p class="card-text"><strong>Data:</strong> ${transaction.planData}</p>
+                            <p class="card-text"><strong>SMS:</strong> ${transaction.planSms}</p>
+                            <p class="card-text"><strong>Calls:</strong> ${transaction.planCalls}</p>
+                            <p class="card-text"><strong>Transaction ID:</strong> ${transaction.transactionId}</p>
+                            <p class="card-text"><strong>Payment Method:</strong> ${transaction.paymentMethod}</p>
+                            <p class="card-text"><strong>Date:</strong> ${transactionDate.toLocaleDateString()} | ${transactionDate.toLocaleTimeString()}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+
+        function generateDummyTransactions() {
+            let plans = [
+                { name: "Basic Plan", price: "₹199", data: "10GB", sms: "50", calls: "Unlimited" },
+                { name: "Standard Plan", price: "₹399", data: "30GB", sms: "100", calls: "Unlimited" },
+                { name: "Premium Plan", price: "₹599", data: "50GB", sms: "200", calls: "Unlimited" }
+            ];
+
+            let paymentMethods = ["UPI", "Credit Card", "Debit Card", "Net Banking"];
+            let transactions = [];
+
+            for (let i = 0; i < 10; i++) {  // Generate 10 dummy transactions
+                let plan = plans[Math.floor(Math.random() * plans.length)];
+                let paymentMethod = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
+                let transactionId = Math.floor(10000000 + Math.random() * 90000000).toString();
+                
+                // Generate a random date within the last 6 months
+                let date = new Date();
+                date.setMonth(date.getMonth() - Math.floor(Math.random() * 6));
+                date.setDate(Math.floor(Math.random() * 28) + 1);
+
+                transactions.push({
+                    planName: plan.name,
+                    planPrice: plan.price,
+                    planData: plan.data,
+                    planSms: plan.sms,
+                    planCalls: plan.calls,
+                    transactionId: transactionId,
+                    paymentMethod: paymentMethod,
+                    date: date.toISOString()
+                });
+            }
+
+            return transactions;
+        }
+
+        function goBack() {
+            window.location.href = "dashboard.html";
+        }
+    </script>
+
+</body>
+</html>
