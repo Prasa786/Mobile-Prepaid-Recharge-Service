@@ -1,0 +1,91 @@
+.bg-admin-login {
+    background-color: #0C1D13;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #EAE7DC !important;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.nav-link {
+    color: #EAE7DC !important;
+    font-size: 1rem;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #B68D40 !important;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #1A3C34;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.login-container h2 {
+    color: #EAE7DC;
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #617A55;
+    border-radius: 5px;
+    background-color: #0C1D13;
+    color: #EAE7DC;
+    font-size: 1rem;
+    outline: none;
+}
+
+.login-container input:focus {
+    border-color: #B68D40;
+}
+
+.login-container .btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #B68D40;
+    color: #0C1D13;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-container .btn-login:hover {
+    background-color: #9C7740;
+}
+
+.footer {
+    background-color: #0C1D13;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.adminPic{
+    background: url("img/admin.jpg")  no-repeat center center/cover;
+    margin-bottom: 90px;
+    padding: 60px 20px;
+    color: #EAE7DC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+    position: relative;
+
+}

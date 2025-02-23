@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | VoltMobi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="admin-login.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-admin-login">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/212268702.png" alt="VoltMobi Logo" height="40">
+                <span class="ms-2">Admin Login</span>
+            </a>
+
+  
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminLoginNavbar" aria-controls="adminLoginNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="adminLoginNavbar">
+                <ul class="navbar-nav">
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+
+                
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">User Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  
+     <div class="adminPic">
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <input type="email" id="adminEmail" placeholder="Email" required>
+            <input type="password" id="adminPassword" placeholder="Password" required>
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+    </div>
+</div>
+   
+    <footer class="footer bg-admin-login text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2023 VoltMobi. All rights reserved.</p>
+        </div>
+    </footer>
+    <script >
+     
+
+document.getElementById("adminLoginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("adminEmail").value;
+    const password = document.getElementById("adminPassword").value;
+
+   
+    if (email === "admin@123.com" && password === "admin123") {
+        alert("Admin login successful!");
+        window.location.href = "admin.html"; 
+    } else {
+        alert("Invalid email or password.");
+    }
+});
+    </script>>
+</body>
+</html>

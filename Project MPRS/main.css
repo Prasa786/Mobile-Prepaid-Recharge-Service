@@ -315,7 +315,7 @@
 
 
 .form-box {
-    background-color: rgba(26, 60, 52, 0.8);
+    background-color: rgba(26, 60, 52, 0.181);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -500,7 +500,7 @@
 
 
 .hero {
-    background: linear-gradient(135deg, #1A3C34 0%, #0C1D13 100%);
+    background: url(img/logban\ \(1\).png);
     color: white;
     text-align: center;
     padding: 80px 20px;

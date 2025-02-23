@@ -1,12 +1,13 @@
  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | VoltMobi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css" type="text/css">
-    <link rel="icon" href="img/212268702.png" type="image/icon">
+ <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Admin Dashboard | VoltMobi</title>
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="admin.css" type="text/css">
+         <link rel="icon" href="img/212268702.png" type="image/icon">
+         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -20,6 +21,8 @@
             <a href="#support-tickets">Support Tickets</a>
             <a href="#feedback-reports">Feedback Reports</a>
             <a href="#analytics">Analytics</a>
+            <a class="btn btn-outline ms-3" href="#" onclick="logout()"><img src="img/user_profile.png" alt="admin"  ></a>
+            
         </nav>
     </header>
     <section id="expiring-plans" class="admin-section">
@@ -55,9 +58,9 @@
             </tbody>
         </table>
     </section>
-    <section id="transaction-history" class="admin-section">
+    <section id="transaction-history" class="admin-section" >
         <h2>Transaction History</h2>
-        <div class="filters">
+        <div class="filters" style="display: block;">
             <input type="date" id="filterDate" placeholder="Filter by Date">
             <input type="number" id="filterAmount" placeholder="Filter by Amount">
             <select id="filterPaymentMethod">
@@ -144,8 +147,68 @@
             </div>
         </div>
     </section>
+    <div  class="Analytical-Sections">
+        <h2>
+            Customer Trend Analytics Dashboard
+        </h2>
+        <canvas id="Analysis"></canvas>
+    </div>
 
-   
     <script src="admin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded" , () => {
+    const data = {
+        labels :["January" , "February" , "March","April","May","June"],
+        datasets :[{
+            label:"Monthly Active Users",
+            data:[1200,1500,2000,2500,3000,3500],
+            backgroundColor:"#",
+            borderColor:"#B68D40",
+            borderWidth: 2,
+            pointBackgroundColor:"#B68D40",
+            pointRadius:5,
+            pointRadiusHover: 7.
+        }]
+    };
+    const options = {
+        responsive :true,
+        plugins : {
+            legend :{
+                display:true,
+                position:"top"
+            },
+            tooltip:{
+                enabled:true
+            }
+        },
+        scales :{
+            y:{
+                beginAtZero:true,
+                title: {
+                    display:true,
+                    text:"Number of Users",
+                }
+            },
+            x:{
+                title:{
+                    display:true,
+                    text:"Months",
+                }
+            }
+        }
+    };
+    const ctx = document.getElementById("Analysis").getContext("2d");
+    const Analysis= new Chart(ctx,{
+        type:"line",
+        data:data,
+        options:options,
+    });
+}
+);
+function logout() {
+            window.location.href = "admin-login.html";
+        }
+
+    </script>
 </body>
 </html> 

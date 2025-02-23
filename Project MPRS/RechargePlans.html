@@ -6,9 +6,10 @@
     <title>Recharge Plans - VoltMobi</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="recharge.css" type="text/css">
+    <link rel="icon" href="img/212268702.png" type="image/png">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="img/212268702.png" alt="VoltMobi Logo" height="40">
@@ -36,7 +37,7 @@
                 </ul>
                 <div class="d-flex align-items-center ms-auto">
                     <img src="img/user-logo.png" alt="" height="45px">
-                    <span class="me-3 fw-bold">User: <span id="userPhone">9876543210</span></span>
+                    <span class="me-3 fw-bold">User: <span id="userPhone">(PrePaid)</span></span>
                     <button class="btn btn-outline-light btn-sm" onclick="updatePhoneNumber()">Update</button>
                     <a class="btn btn-outline-danger ms-3" href="#" onclick="logout()">Logout</a>
                 </div>
@@ -44,66 +45,43 @@
         </div>
     </nav>
 
-   
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <h3>Filter Plans</h3>
+                <input type="text" id="searchPlans" placeholder="Search plans..." class="form-control mb-3">
+                <select id="filterType" class="form-control mb-3">
+                    <option value="all">All Types</option>
+                    <option value="recommended">Recommended</option>
+                    <option value="unlimited">Unlimited</option>
+                    <option value="data-addon">Data Add-On</option>
+                    <option value="topup">Top-Up</option>
+                    <option value="long-validity">Long Validity</option>
+                </select>
+                <h3>Categories</h3>
+                <ul class="list-unstyled">
+                    <li><a href="#" onclick="filterByType('All Types')">All</a></li>
+                    <li><a href="#" onclick="filterByType('recommended')">Recommended Plan</a></li>
+                    <li><a href="#" onclick="filterByType('popular')">Popular Plan</a></li>
+                    <li><a href="#" onclick="filterByType('unlimited')">Unlimited</a></li>
+                    <li><a href="#" onclick="filterByType('data-addon')">Data Add-On</a></li>
+                    <li><a href="#" onclick="filterByType('topup')">Top-Up</a></li>
+                    <li><a href="#" onclick="filterByType('long-validity')">Long Validity</a></li>
+                </ul>
+            </div>
 
-        <div class="sidebar">
-            <h3>Filter Plans</h3>
-            <input type="text" id="searchPlans" placeholder="Search plans..." class="form-control mb-3">
-            <select id="filterType" class="form-control mb-3">
-                <option value="all">All Types</option>
-                <option value="recommended">Recommended</option>
-                <option value="unlimited">Unlimited</option>
-                <option value="data-addon">Data Add-On</option>
-            </select>
-            <h3>Categories</h3>
-            <a href="#" onclick="filterByType('recommended')">Recommended Plan</a>
-            <a href="#" onclick="filterByType('popular')">Popular Plan</a>
-            <a href="#" onclick="filterByType('unlimited')">Unlimited</a>
-            <a href="#" onclick="filterByType('data-addon')">Data Add-On</a>
-            <a href="#" onclick="filterByType('topup')">Top-Up</a>
-            <a href="#" onclick="filterByType('long-validity')">Long Validity</a>
-        </div>
-
-       
-        <div class="main-content">
-            <div id="plansContainer" class="row"></div>
+            <div class="col-md-9 main-content">
+                <div id="plansContainer" class="row"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section about">
-                <h2>Volt Mobi</h2>
-                <p>Your trusted prepaid recharge service for fast, secure, and affordable mobile top-ups.</p>
-            </div>
-            <div class="footer-section quick-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Plans</a></li>
-                    <li><a href="#">Recharge</a></li>
-                    <li><a href="#">Support</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-section social-icons">
-                <h3>Follow Us</h3>
-                <div class="sm-icons">
-                    <a href="#"><i class="bi bi-whatsapp"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#"><i class="bi bi-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
+    <footer class="footer bg-dark text-white text-center py-3">
+        <div class="container">
             <p>&copy; 2025 Volt Mobi. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap Modal -->
     <div class="modal fade" id="planModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,15 +105,14 @@
 
     <script>
         const plans = [
-            { id: "recommended", name: "Recommended 3GB/day", price: 349, validity: "28 Days", type: "recommended", details: "Unlimited Calls + 100 SMS/day" },
+            { id: "recommended", name: "Recommended 3GB/day", price: 349, validity: "28 Days", type: "recommended", details: "Unlimited Calls +100 SMS/day" ,sms:"100+ sms"},
             { id: "popular", name: "Popular 2GB/day", price: 299, validity: "56 Days", type: "popular", details: "Disney+ Hotstar Free" },
             { id: "unlimited", name: "Unlimited 1.5GB/day", price: 199, validity: "28 Days", type: "unlimited", details: "Free Prime Subscription" },
             { id: "data-addon", name: "Data Add-On 5GB", price: 98, validity: "Validity as per base plan", type: "data-addon", details: "5GB additional data" },
             { id: "topup", name: "Top-Up ₹50", price: 50, validity: "Unlimited", type: "topup", details: "Talktime: ₹50" },
             { id: "long-validity", name: "Long Validity 365 Days", price: 1599, validity: "365 Days", type: "long-validity", details: "2GB/day + Unlimited Calls" },
-            { id: "work-from-home", name: "Work From Home 4GB/day", price: 449, validity: "28 Days", type: "work", details: "Unlimited Calls + 200 SMS/day" },
+            { id: "Popular", name: "Work From Home 4GB/day", price: 449, validity: "28 Days", type: "work", details: "Unlimited Calls + 200 SMS/day" },
             { id: "student-special", name: "Student Special 1GB/day", price: 199, validity: "90 Days", type: "student", details: "Extra 50GB data for online classes" },
-            { id: "international", name: "International Pack", price: 1199, validity: "14 Days", type: "international", details: "Unlimited calls to US, UK, Canada" },
             { id: "senior-citizen", name: "Senior Citizen Plan", price: 179, validity: "60 Days", type: "senior", details: "1GB/day + Unlimited Calls + Free health helpline" },
             { id: "festival-offer", name: "Festival Special 3GB/day", price: 399, validity: "30 Days", type: "festival", details: "Unlimited Calls + Free OTT Access" },
             { id: "data-addon-10gb", name: "Data Add-On 10GB", price: 149, validity: "Validity as per base plan", type: "data-addon", details: "10GB additional data" },
@@ -143,7 +120,6 @@
             { id: "gaming", name: "Gaming Pack 5GB/day", price: 499, validity: "30 Days", type: "gaming", details: "Extra low-latency servers + Gaming Benefits" }
         ];
 
-        
         function displayPlans(search = "", type = "all") {
             const container = document.getElementById("plansContainer");
             container.innerHTML = "";
@@ -173,12 +149,10 @@
             });
         }
 
-        
         function filterByType(type) {
             displayPlans("", type);
         }
 
-       
         function viewDetails(name, price, validity, details) {
             document.getElementById("modalPlanName").innerText = `Plan: ${name}`;
             document.getElementById("modalPlanPrice").innerText = `Price: ₹${price}`;
@@ -189,12 +163,10 @@
             modal.show();
         }
 
-        
         function confirmPlan() {
             window.location.href = "payment.html";
         }
 
-        
         function buyNow(name, price, validity, details) {
             localStorage.setItem("planName", name);
             localStorage.setItem("planPrice", price);
@@ -203,23 +175,24 @@
             window.location.href = "payment.html";
         }
 
-      
         document.getElementById("searchPlans").addEventListener("input", (e) => {
             const search = e.target.value;
             const type = document.getElementById("filterType").value;
             displayPlans(search, type);
         });
 
-       
         document.getElementById("filterType").addEventListener("change", (e) => {
             const search = document.getElementById("searchPlans").value;
             const type = e.target.value;
             displayPlans(search, type);
         });
 
-     
         displayPlans();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

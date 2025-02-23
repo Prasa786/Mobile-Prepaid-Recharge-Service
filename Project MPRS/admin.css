@@ -141,11 +141,35 @@ table tr:hover {
 .analytics-cards .card h3 {
     margin: 0;
     font-size: 20px;
-    color: #EAE7DC;
+    color: hwb(47 86% 8%);
 }
 
 .analytics-cards .card p {
     margin: 10px 0 0;
     font-size: 24px;
     color: #B68D40;
+}
+
+.Analytical-Sections{
+    background-color: #0C1D13;
+    padding:40px 20px;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 4px 12px #a09739;
+}
+.Analytical-Sections{
+    color: #EAE7DC;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+canvas{
+    height: auto !important;
+    text-align: center;
+    max-width: 100%;
+}
+nav a img{
+    height:40px;
+    margin-bottom: 20px;
+    display: flex;
 }

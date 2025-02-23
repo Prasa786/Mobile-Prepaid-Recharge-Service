@@ -73,3 +73,85 @@ document.getElementById("notificationForm").addEventListener("submit", (e) => {
     alert(`Notification sent: ${message}`);
     document.getElementById("notificationForm").reset();
 });
+document.addEventListener("DOMContentLoaded" , () => {
+    const data = {
+        labels :["January" , "February" , "March","April","May","June"],
+        datasets :[{
+            label:"Monthly Active Users",
+            data:[1200,1500,2000,2500,3000,3500],
+            backgroundColor:"rgb(255, 255, 255)",
+            borderColor:"#B68D40",
+            borderWidth: 2,
+            pointBackgroundColor:"#B68D40",
+            pointRadius:5,
+            pointRadiusHover: 7.
+        }]
+    };
+    const options = {
+        responsive :true,
+        plugins : {
+            legend :{
+                display:true,
+                position:"top"
+            },
+            tooltip:{
+                enabled:true
+            }
+        },
+        scales :{
+            y:{
+                beginAtZero:true,
+                title: {
+                    display:true,
+                    text:"Number of Users",
+                }
+            },
+            x:{
+                title:{
+                    display:true,
+                    text:"Months",
+                }
+            }
+        }
+
+    };
+    const config = {
+        type: 'line',
+        data: {
+          datasets: [{
+            borderColor: Utils.CHART_COLORS.red,
+            borderWidth: 1,
+            radius: 0,
+            data: data,
+          },
+          {
+            borderColor: Utils.CHART_COLORS.blue,
+            borderWidth: 1,
+            radius: 0,
+            data: data2,
+          }]
+        },
+        options: {
+          animation,
+          interaction: {
+            intersect: false
+          },
+          plugins: {
+            legend: false
+          },
+          scales: {
+            x: {
+              type: 'linear'
+            }
+          }
+        }
+      };
+      
+    const ctx = document.getElementById("Analysis").getContext("2d");
+    const Analysis= new CharacterData(ctx,{
+        type:"line",
+        data:data,
+        options:options,
+    });
+}
+);

@@ -4,75 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VoltMobi - Payment</title>
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            background-color: #0C1D13; 
-            color: #EAE7DC; 
+            background-color: #0C1D13; /* Dark green background */
+            color: #EAE7DC; /* Light text color */
             font-family: 'Outfit', sans-serif;
         }
 
-        .navbar {
-            background-color: #1A3C34; 
-        }
-
-        .navbar-brand, .nav-link {
-            color: #EAE7DC !important; 
-        }
-
-        .nav-link:hover {
-            color: #B68D40 !important; 
-        }
-
-        .plan-summary, .payment-summary, .payment-container {
-            background-color: #222C25; 
-            border-radius: 10px;
+        .sidebar {
+            background-color: #1A3C34; /* Dark green sidebar */
             padding: 20px;
-            margin-bottom: 20px;
-            color: #EAE7DC; 
+            border-radius: 10px;
+            height: 100%;
         }
 
-        .btn-primary {
-            background-color: #B68D40; 
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #9A7636; 
-        }
-
-        .btn-secondary {
-            background-color: #617A55; 
-            border: none;
-        }
-
-        .btn-secondary:hover {
-            background-color: #4A5E43; 
-        }
-
-        .payment-option {
+        .sidebar .payment-option {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
             padding: 10px;
-            border: 1px solid #617A55; 
-            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #617A55; /* Border color */
+            border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .payment-option:hover {
-            background-color: #1A3C34; 
+        .sidebar .payment-option:hover {
+            background-color: #222C25; /* Hover background */
+        }
+
+        .sidebar .payment-option.active {
+            background-color: #B68D40; /* Active background */
+            border-color: #B68D40;
+        }
+
+        .main-content {
+            background-color: #222C25; /* Dark green content background */
+            padding: 20px;
+            border-radius: 10px;
         }
 
         .payment-icon {
-            width: 40px; 
+            width: 40px;
             height: 40px;
             margin-right: 10px;
-            object-fit: contain; 
+            object-fit: contain;
             border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #B68D40; /* Primary button color */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #9A7636; /* Hover color */
+        }
+
+        .btn-secondary {
+            background-color: #617A55; /* Secondary button color */
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4A5E43; /* Hover color */
         }
 
         .footer {
@@ -83,13 +84,151 @@
         }
 
         .footer-bottom {
-            background-color: #0C1D13; 
+            background-color: #0C1D13;
             padding: 20px 0;
         }
+        .navbar {
+    background: linear-gradient(to right top, #0C1D13, #1A3C34);
+    height: 80px;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+    padding: 10px 15px;
+    color: #EAE7DC;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out, transform 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #B68D40;
+    transform: scale(1.05);
+}
+
+.footer {
+    background: #222C25;
+    color: white;
+    padding: 30px 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: auto;
+    gap: 20px;
+}
+
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 6px;
+}
+
+.footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 13px;
+}
+
+.footer-section ul li a:hover {
+    color: #B68D40;
+}
+
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 18px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+    transform: scale(1.1);
+    color: #B68D40;
+}
+
+
+.footer-section form {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.footer-section input {
+    padding: 6px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    width: 60%;
+}
+
+.footer-section button {
+    background: #B68D40;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 12px;
+}
+
+.footer-section button:hover {
+    background: #617A55;
+    color: #EAE7DC;
+}
+
+
+.footer-bottom {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 8px;
+    font-size: 12px;
+}
+
     </style>
 </head>
 <body>
-   
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -120,84 +259,99 @@
         </div>
     </nav>
 
-   
+    <!-- Main Content -->
     <div class="container mt-5">
         <h1 class="text-light">Payment Details</h1>
         <div class="row">
-            <div class="col-md-6">
-                <div class="plan-summary">
-                    <h4 class="mb-4 text-center text-accent">Plan Summary</h4>
-                    <p id="summaryPlanName"></p>
-                    <p id="summaryPrice"></p>
-                    <p id="summaryData"></p>
-                    <p id="summarySms"></p>
-                    <p id="summaryCalls"></p>
-                </div>
-            </div>
-
-   
-            <div class="col-md-6">
-                <div class="payment-summary">
-                    <h4 class="mb-4 text-center text-accent">Payment Summary</h4>
-                    <p id="amountLabel"></p>
-                    <p id="gstlabel"></p>
-                    <hr style="border: #617A55 1px solid;">
-                    <p id="totalLabel"></p>
-                    <hr style="border: #617A55 1px solid;">
-                </div>
-            </div>
-        </div>
-   
-        <div class="payment-container">
-            <h3 class="text-center text-accent">Payment</h3>
-            <form id="payment-form">
-                <div class="form-group">
-                    <label for="paymentMethod" class="text-light">Select a Payment Method</label>
-                    <select class="form-control" id="paymentMethod" onchange="togglePaymentInputs()">
-                        <option value="" disabled selected>Select a payment method</option>
-                        <option value="upi">UPI</option>
-                        <option value="card">Credit/Debit Card</option>
-                        <option value="netbanking">Net Banking</option>
-                        <option value="wallet">Wallet</option>
-                    </select>
-                </div>
-
-              
-                <div id="paymentOptions" class="mt-4"></div>
-
-                <div class="form-group text-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-block" id="payButton" disabled>Pay</button>
-                    <button type="button" class="btn btn-secondary btn-block" onclick="window.history.back()">Cancel</button>
-                </div>
-            </form>
-        </div>
-
-    
-        <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-accent" id="paymentSuccessModalLabel "style="color: #000;">Payment Successful</h5>
-                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            <!-- First Column: Payment Options -->
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h4 class="text-center text-accent mb-4">Payment Options</h4>
+                    <div class="payment-option" data-method="upi">
+                        <img src="img/upi.jpg" alt="UPI" class="payment-icon">
+                        <span>UPI</span>
                     </div>
-                    <div class="modal-body text-center">
-                        <div class="success-icon-container">
-                            <img src="img/pngegg.png" height="45">
+                    <div class="payment-option" data-method="card">
+                        <img src="img/card.png" alt="Card" class="payment-icon">
+                        <span>Card</span>
+                    </div>
+                    <div class="payment-option" data-method="netbanking">
+                        <img src="img/netbanking.png" alt="Net Banking" class="payment-icon">
+                        <span>Net Banking</span>
+                    </div>
+                    <div class="payment-option" data-method="wallet">
+                        <img src="img/wallet.png" alt="Wallet" class="payment-icon">
+                        <span>Wallet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Column: Payment Method Details -->
+            <div class="col-md-5">
+                <div class="main-content">
+                    <div id="paymentOptions" class="mt-4"></div>
+                    <!-- Pay and Cancel Buttons -->
+                    <form id="payment-form">
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary" id="payButton" disabled>Pay</button>
+                            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                         </div>
-                        <p class="success-message text-light">Your payment was successful!</p>
-                        <div class="transaction-details mt-4 text-dark">
-                            <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
-                            <p><strong>Date:</strong> <span id="transactionDate"></span></p>
-                            <p><strong>Time:</strong> <span id="transactionTime"></span></p>
-                            <p><strong>Payment Method:</strong> <span id="transactionPaymentMethod"></span></p>
-                            <p><strong>Gift:</strong> <span id="transactionGift"></span></p>
-                        </div>
-                        <div class="mt-4">
-                            <button class="btn btn-primary" onclick="redirectToRecharge()">Pay Again</button>
-                            <button class="btn btn-secondary" onclick="redirectToDashboard()">Go to Dashboard</button>
-                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Third Column: Plan Summary and Payment Summary -->
+            <div class="col-md-4">
+                <div class="main-content">
+                    <!-- Plan Summary -->
+                    <div class="plan-summary mb-4">
+                        <h4 class="text-center text-accent mb-4">Plan Summary</h4>
+                        <p id="summaryPlanName"></p>
+                        <p id="summaryPrice"></p>
+                        <p id="summaryData"></p>
+                        <p id="summarySms"></p>
+                        <p id="summaryCalls"></p>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="payment-summary mb-4">
+                        <h4 class="text-center text-accent mb-4">Payment Summary</h4>
+                        <p id="amountLabel"></p>
+                        <p id="gstlabel"></p>
+                        <hr style="border: #617A55 1px solid;">
+                        <p id="totalLabel"></p>
+                        <hr style="border: #617A55 1px solid;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-accent" id="paymentSuccessModalLabel" style="color: #000;">Payment Successful</h5>
+                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="success-icon-container">
+                        <img src="img/pngegg.png" height="45">
+                    </div>
+                    <p class="success-message text-light">Your payment was successful!</p>
+                    <div class="transaction-details mt-4 text-dark">
+                        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+                        <p><strong>Date:</strong> <span id="transactionDate"></span></p>
+                        <p><strong>Time:</strong> <span id="transactionTime"></span></p>
+                        <p><strong>Payment Method:</strong> <span id="transactionPaymentMethod"></span></p>
+                        <p><strong>Gift:</strong> <span id="transactionGift"></span></p>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-primary" onclick="redirectToRecharge()">Pay Again</button>
+                        <button class="btn btn-secondary" onclick="redirectToDashboard()">Go to Dashboard</button>
                     </div>
                 </div>
             </div>
@@ -234,11 +388,248 @@
         </div>
     </footer>
 
-   
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    <script src="payment.js"></script>
+    <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    // Load plan details from localStorage
+    const planName = localStorage.getItem("planName");
+    const planPrice = localStorage.getItem("planPrice");
+    const planData = localStorage.getItem("planData");
+    const planSms = localStorage.getItem("planSms");
+    const planCalls = localStorage.getItem("planCalls");
+
+    // Display plan details
+    document.getElementById("summaryPlanName").innerText = `Plan: ${planName}`;
+    document.getElementById("summaryPrice").innerText = `Price: ₹${planPrice}`;
+    document.getElementById("summaryData").innerText = `Data: ${planData}`;
+    document.getElementById("summarySms").innerText = `SMS: ${planSms}`;
+    document.getElementById("summaryCalls").innerText = `Calls: ${planCalls}`;
+
+    // Calculate GST and Total Amount
+    const gst = (parseFloat(planPrice) * 0.18).toFixed(2);
+    const totalAmount = (parseFloat(planPrice) + parseFloat(gst)).toFixed(2);
+
+    // Display payment summary
+    document.getElementById("amountLabel").innerText = `Amount: ₹${planPrice}`;
+    document.getElementById("gstlabel").innerText = `GST (18%): ₹${gst}`;
+    document.getElementById("totalLabel").innerText = `Total Amount: ₹${totalAmount}`;
+
+    // Add event listeners to sidebar payment options
+    document.querySelectorAll(".sidebar .payment-option").forEach((option) => {
+        option.addEventListener("click", function () {
+            // Remove active class from all options
+            document.querySelectorAll(".sidebar .payment-option").forEach((opt) => {
+                opt.classList.remove("active");
+            });
+
+            // Add active class to the clicked option
+            this.classList.add("active");
+
+            // Show corresponding payment method
+            const method = this.getAttribute("data-method");
+            document.getElementById("paymentOptions").innerHTML = getPaymentOptions(method);
+            validatePayment();
+        });
+    });
+
+    // Handle form submission
+    const paymentForm = document.getElementById("payment-form");
+    if (paymentForm) {
+        paymentForm.addEventListener("submit", handlePaymentSubmit);
+    } else {
+        console.error("Form with id 'payment-form' not found!");
+    }
+
+    // Load wallet balance and payment history
+    loadWalletBalance();
+    loadPaymentHistory();
+});
+
+function loadWalletBalance() {
+    const walletBalance = Math.floor(Math.random() * 1000).toFixed(2);
+    document.getElementById("walletBalance").innerText = `₹${walletBalance}`;
+}
+
+function loadPaymentHistory() {
+    const recentPayments = [
+        { id: "123456", amount: "₹299", date: "2023-10-01", method: "UPI" },
+        { id: "789012", amount: "₹499", date: "2023-09-25", method: "Wallet" },
+    ];
+
+    const recentPaymentsList = document.getElementById("recentPayments");
+    if (recentPaymentsList) {
+        recentPaymentsList.innerHTML = recentPayments
+            .map(
+                (payment) => `
+                <li class="text-light">
+                    <strong>Transaction ID:</strong> ${payment.id}<br>
+                    <strong>Amount:</strong> ${payment.amount}<br>
+                    <strong>Date:</strong> ${payment.date}<br>
+                    <strong>Method:</strong> ${payment.method}
+                </li>
+            `
+            )
+            .join("");
+    }
+}
+
+function getPaymentOptions(method) {
+    if (method === "upi") {
+        return `
+            <div class="upi-options">
+                <label class="text-light">Select UPI Provider</label>
+                <div class="payment-option" data-provider="Google Pay">
+                    <input type="radio" name="upiProvider" id="googlePay">
+                    <img src="img/gpay.png" alt="Google Pay" class="payment-icon">
+                    <label for="googlePay" class="text-light">Google Pay</label>
+                </div>
+                <div class="payment-option" data-provider="PhonePe">
+                    <input type="radio" name="upiProvider" id="phonePe">
+                    <img src="img/phonepe.png" alt="PhonePe" class="payment-icon">
+                    <label for="phonePe" class="text-light">PhonePe</label>
+                </div>
+                <div class="payment-option" data-provider="Paytm">
+                    <input type="radio" name="upiProvider" id="paytm">
+                    <img src="img/Paytm.png" alt="Paytm" class="payment-icon">
+                    <label for="paytm" class="text-light">Paytm</label>
+                </div>
+            </div>
+        `;
+    } else if (method === "card") {
+        return `
+            <div class="card-inputs">
+                <div class="form-group">
+                    <label for="cardNumber" class="text-light">Card Information</label>
+                    <input type="text" class="form-control" id="cardNumber" placeholder="Card Number">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" placeholder="CVV">
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (method === "netbanking") {
+        return `
+            <div class="bank-options">
+                <label class="text-light">Select a Bank</label>
+                <div class="payment-option" data-bank="SBI">
+                    <input type="radio" name="bank" id="sbi">
+                    <img src="img/sbi.png" alt="SBI" class="payment-icon">
+                    <label for="sbi" class="text-light">SBI</label>
+                </div>
+                <div class="payment-option" data-bank="HDFC">
+                    <input type="radio" name="bank" id="hdfc">
+                    <img src="img/hdfc.png" alt="HDFC" class="payment-icon">
+                    <label for="hdfc" class="text-light">HDFC</label>
+                </div>
+            </div>
+        `;
+    } else if (method === "wallet") {
+        return `
+            <div class="wallet-options">
+                <label class="text-light">Select Wallet</label>
+                <div class="payment-option" data-wallet="Paytm Wallet">
+                    <input type="radio" name="wallet" id="paytmWallet">
+                    <img src="img/paytm-wallet.png" alt="Paytm Wallet" class="payment-icon">
+                    <label for="paytmWallet" class="text-light">Paytm Wallet</label>
+                </div>
+                <div class="payment-option" data-wallet="PhonePe Wallet">
+                    <input type="radio" name="wallet" id="phonepeWallet">
+                    <img src="img/phonepe-wallet.png" alt="PhonePe Wallet" class="payment-icon">
+                    <label for="phonepeWallet" class="text-light">PhonePe Wallet</label>
+                </div>
+            </div>
+        `;
+    }
+    return "";
+}
+
+function handlePaymentSubmit(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the selected payment method
+    const selectedPaymentMethod = document.querySelector(".sidebar .payment-option.active")?.getAttribute("data-method");
+    console.log("Form submitted!"); 
+    // Get the selected provider (UPI, Bank, Wallet, etc.)
+    let selectedProvider = "";
+    if (selectedPaymentMethod === "upi") {
+        selectedProvider = document.querySelector("input[name='upiProvider']:checked")?.parentElement.getAttribute("data-provider");
+    } else if (selectedPaymentMethod === "netbanking") {
+        selectedProvider = document.querySelector("input[name='bank']:checked")?.parentElement.getAttribute("data-bank");
+    } else if (selectedPaymentMethod === "wallet") {
+        selectedProvider = document.querySelector("input[name='wallet']:checked")?.parentElement.getAttribute("data-wallet");
+    }
+
+    // Display payment success modal
+    const gift = getGift(selectedPaymentMethod);
+    document.getElementById("transactionId").textContent = Math.floor(10000000 + Math.random() * 90000000).toString();
+    document.getElementById("transactionDate").textContent = new Date().toLocaleDateString();
+    document.getElementById("transactionTime").textContent = new Date().toLocaleTimeString();
+    document.getElementById("transactionPaymentMethod").textContent = `${selectedPaymentMethod} (${selectedProvider})`;
+    document.getElementById("transactionGift").textContent = gift;
+
+    // Show the modal
+    $('#paymentSuccessModal').modal('show');
+}
+
+function getGift(method) {
+    switch (method) {
+        case "upi":
+            return "5 GB Data Free for 3 Days";
+        case "card":
+            return "10% Cashback on Next Recharge";
+        case "netbanking":
+            return "Free SMS Pack for 7 Days";
+        case "wallet":
+            return "₹50 Wallet Cashback";
+        default:
+            return "No Gift";
+    }
+}
+
+function redirectToRecharge() {
+    window.location.href = "recharge.html";
+}
+
+function redirectToDashboard() {
+    window.location.href = "dashboard.html";
+}
+
+function validatePayment() {
+    const selectedPaymentMethod = document.querySelector(".sidebar .payment-option.active")?.getAttribute("data-method");
+    let isValid = false;
+
+    if (selectedPaymentMethod === "upi") {
+        isValid = document.querySelector("input[name='upiProvider']:checked") !== null;
+    } else if (selectedPaymentMethod === "netbanking") {
+        isValid = document.querySelector("input[name='bank']:checked") !== null;
+    } else if (selectedPaymentMethod === "wallet") {
+        isValid = document.querySelector("input[name='wallet']:checked") !== null;
+    } else if (selectedPaymentMethod === "card") {
+        isValid = document.getElementById("cardNumber").value.trim() !== "" &&
+                  document.querySelector(".card-inputs input[placeholder='MM/YY']").value.trim() !== "" &&
+                  document.querySelector(".card-inputs input[placeholder='CVV']").value.trim() !== "";
+    }
+
+    const payButton = document.getElementById("payButton");
+    if (payButton) {
+        payButton.disabled = !isValid;
+    } else {
+        console.error("Pay button with id 'payButton' not found!");
+    }
+}    </script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
