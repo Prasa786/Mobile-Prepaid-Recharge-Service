@@ -375,7 +375,20 @@
 .btn-recharge:hover {
     background-color: #9C7740;
 }
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: var(--accent);
+    transition: width 0.3s;
+}
 
+.nav-link:hover::after {
+    width: 100%;
+}
 
 @media (max-width: 768px) {
     .recharge-container {

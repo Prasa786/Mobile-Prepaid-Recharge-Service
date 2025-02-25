@@ -1,46 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Load plan details from localStorage
     const planName = localStorage.getItem("planName");
     const planPrice = localStorage.getItem("planPrice");
     const planData = localStorage.getItem("planData");
     const planSms = localStorage.getItem("planSms");
     const planCalls = localStorage.getItem("planCalls");
 
-    // Display plan details
     document.getElementById("summaryPlanName").innerText = `Plan: ${planName}`;
     document.getElementById("summaryPrice").innerText = `Price: ₹${planPrice}`;
     document.getElementById("summaryData").innerText = `Data: ${planData}`;
     document.getElementById("summarySms").innerText = `SMS: ${planSms}`;
     document.getElementById("summaryCalls").innerText = `Calls: ${planCalls}`;
 
-    // Calculate GST and Total Amount
     const gst = (parseFloat(planPrice) * 0.18).toFixed(2);
     const totalAmount = (parseFloat(planPrice) + parseFloat(gst)).toFixed(2);
 
-    // Display payment summary
     document.getElementById("amountLabel").innerText = `Amount: ₹${planPrice}`;
     document.getElementById("gstlabel").innerText = `GST (18%): ₹${gst}`;
     document.getElementById("totalLabel").innerText = `Total Amount: ₹${totalAmount}`;
 
-    // Add event listeners to sidebar payment options
     document.querySelectorAll(".sidebar .payment-option").forEach((option) => {
         option.addEventListener("click", function () {
-            // Remove active class from all options
             document.querySelectorAll(".sidebar .payment-option").forEach((opt) => {
                 opt.classList.remove("active");
             });
 
-            // Add active class to the clicked option
             this.classList.add("active");
 
-            // Show corresponding payment method
             const method = this.getAttribute("data-method");
             document.getElementById("paymentOptions").innerHTML = getPaymentOptions(method);
             validatePayment();
         });
     });
 
-    // Handle form submission
     const paymentForm = document.getElementById("payment-form");
     if (paymentForm) {
         paymentForm.addEventListener("submit", handlePaymentSubmit);
@@ -48,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Form with id 'payment-form' not found!");
     }
 
-    // Load wallet balance and payment history
     loadWalletBalance();
     loadPaymentHistory();
 });
@@ -157,12 +147,10 @@ function getPaymentOptions(method) {
 }
 
 function handlePaymentSubmit(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
 
-    // Get the selected payment method
     const selectedPaymentMethod = document.querySelector(".sidebar .payment-option.active")?.getAttribute("data-method");
 
-    // Get the selected provider (UPI, Bank, Wallet, etc.)
     let selectedProvider = "";
     if (selectedPaymentMethod === "upi") {
         selectedProvider = document.querySelector("input[name='upiProvider']:checked")?.parentElement.getAttribute("data-provider");
@@ -172,7 +160,6 @@ function handlePaymentSubmit(event) {
         selectedProvider = document.querySelector("input[name='wallet']:checked")?.parentElement.getAttribute("data-wallet");
     }
 
-    // Display payment success modal
     const gift = getGift(selectedPaymentMethod);
     document.getElementById("transactionId").textContent = Math.floor(10000000 + Math.random() * 90000000).toString();
     document.getElementById("transactionDate").textContent = new Date().toLocaleDateString();
@@ -180,7 +167,6 @@ function handlePaymentSubmit(event) {
     document.getElementById("transactionPaymentMethod").textContent = `${selectedPaymentMethod} (${selectedProvider})`;
     document.getElementById("transactionGift").textContent = gift;
 
-    // Show the modal
     $('#paymentSuccessModal').modal('show');
 }
 

@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - VoltMobi</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" href="img/212268702.png" type="image/png">
     <link rel="stylesheet" href="dash.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -37,21 +39,26 @@
                             <li><a class="dropdown-item" href="contact.html">Contact Support</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#notificationsModal"><i class="bi bi-bell"></i> <span class="badge bg-danger">3</span></a></li>
                 </ul>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" data-bs-toggle="dropdown">
-                        <img src="img/user_profile.png" alt="User" class="rounded-circle" height="40">
-                    </a>
-                    <ul class="dropdown-menu">
-                    <div class="navbar-text ms-3 d-flex align-items-center">
-                    
-                    <div class="ms-2">
-                        <p class="mb-0 fw-bold " id="userName">User</p>
-                        <p class="mb-0 text-muted" id="userPhone">(Prepaid)</p>
+                <div class="navbar-text ms-3 d-flex align-items-center">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+                            <img src="img/user_profile.png" alt="User" class="rounded-circle" height="40">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><div class="px-3 py-2">
+                                <p class="mb-0 fw-bold" id="userName">User</p>
+                                <p class="mb-0 text-muted" id="userPhone">(Prepaid)</p>
+                            </div></li>
+                            <li><hr class="dropdown-divider" style="color: #0C1D13;"></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal" style="color: #1A3C34;"><i class="bi bi-person"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal" style="color: #1A3C34;"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()" style="color: #1A3C34;"><i class="bi bi-box-arrow-right" ></i> Logout</a></li>
+                        </ul>
                     </div>
                 </div>
-
-                <a class="btn btn-outline ms-3" href="#" onclick="logout()">Logout</a>
             </div>
         </div>
     </nav>
@@ -64,56 +71,34 @@
             <p class="lead">Your registered phone number: <strong id="userPhoneDisplay">(Prepaid)</strong></p>
         </div>
 
-        
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <div class="card text-center p-4 h-100">
-                    <h5 class="card-title fw-bold">Recharge Now</h5>
-                    <p class="card-text">Top up your prepaid account instantly.<br> examine new plans and upgrade</p>
-                    <a href="RechargePlans.html"><button class="btn btn-primary">Recharge</button></a>
+        <!-- Quick Stats Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-primary mb-0"><i class="bi bi-wallet2"></i> ₹245</h4>
+                    <p class="mb-0">Account Balance</p>
                 </div>
             </div>
-            <div class="col-md-4" >
-                <div class="card text-center p-4 h-100">
-                    <h5 class="card-title fw-bold">View Transactions</h5>
-                    <p class="card-text">Check your recharge and usage history.</p>
-                    <br>
-                    <a href="history.html" ><button class="btn btn-secondary">View History</button></a>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-success mb-0"><i class="bi bi-calendar-check"></i> 21</h4>
+                    <p class="mb-0">Days Remaining</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card text-center p-4 h-100">
-                    <h5 class="card-title fw-bold">Current Plan</h5>
-                    <p class="card-text">Unlimited Calls + 2GB/day</p>
-                    <p class="card-text">Validity: 28 Days</p>
-                    <a href="RechargePlans.html"><button class="btn btn-outline-primary">Upgrade Plan</button></a>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-warning mb-0"><i class="bi bi-star"></i> 84</h4>
+                    <p class="mb-0">Loyalty Points</p>
                 </div>
             </div>
-        </div>
-
-    
-        <div class="row g-4 mb-5">
-            <div class="col-md-6">
-                <div class="card p-4 h-100">
-                    <h5 class="card-title fw-bold">Data Usage</h5>
-                    <p class="card-text">Remaining Data: <strong>1.5GB</strong></p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-4 h-100">
-                    <h5 class="card-title fw-bold">Call Usage</h5>
-                    <p class="card-text">Remaining Minutes: <strong>200</strong></p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                    </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-danger mb-0"><i class="bi bi-gift"></i> 2</h4>
+                    <p class="mb-0">Available Offers</p>
                 </div>
             </div>
         </div>
 
-        
         <div class="row g-4 mb-5">
             <div class="col-md-12">
                 <div class="card p-4">
@@ -123,18 +108,30 @@
                             <div class="card p-3">
                                 <h6>Unlimited Calls</h6>
                                 <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card p-3">
                                 <h6>2GB/day Data</h6>
                                 <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card p-3">
                                 <h6>100 SMS/day</h6>
                                 <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,6 +140,263 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title fw-bold">Data Usage</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="card-text mb-0">Remaining Data: <strong>1.5GB</strong> / 2.0GB</p>
+                        <p class="card-text mb-0 text-muted">Resets at midnight</p>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                    </div>
+                    <div class="mt-3">
+                        <canvas id="dataUsageChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title fw-bold">Call Usage</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="card-text mb-0">Remaining Minutes: <strong>200</strong> (Unlimited)</p>
+                        <p class="card-text mb-0 text-success">Unlimited Plan</p>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="row g-2">
+                            <div class="col-sm-6">
+                                <div class="card bg-light p-2">
+                                    <p class="mb-1 small text-muted">Most called contact</p>
+                                    <h6 class="mb-0">Mom (18 mins)</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card bg-light p-2">
+                                    <p class="mb-1 small text-muted">Recent call</p>
+                                    <h6 class="mb-0">Work (5 mins ago)</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-currency-exchange me-2"></i>Recharge Now</h5>
+                    <p class="card-text">Top up your prepaid account instantly.<br> examine new plans and upgrade</p>
+                    <a href="RechargePlans.html"><button class="btn btn-primary">Recharge</button></a>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-clock-history me-2"></i>View Transactions</h5>
+                    <p class="card-text">Check your recharge and usage history.</p>
+                    <br>
+                    <a href="history.html" ><button class="btn btn-secondary">View History</button></a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-lightning-charge me-2"></i>Current Plan</h5>
+                    <p class="card-text">Unlimited Calls + 2GB/day</p>
+                    <p class="card-text">Validity: 28 Days</p>
+                    <a href="RechargePlans.html"><button class="btn btn-outline-primary">Upgrade Plan</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recently Added - Personalized Recommendations -->
+    <div class="container mb-5">
+        <div class="card p-4">
+            <h5 class="card-title fw-bold"><i class="bi bi-lightbulb me-2"></i>Recommended For You</h5>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="card p-3 border-primary">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Weekend Data Pack</h6>
+                            <span class="badge bg-primary">Best Value</span>
+                        </div>
+                        <p class="mb-1">Extra 10GB for weekends</p>
+                        <p class="mb-2">Validity: 30 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹99</span>
+                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">OTT Add-on</h6>
+                            <span class="badge bg-warning">Popular</span>
+                        </div>
+                        <p class="mb-1">Disney+ & Netflix Premium</p>
+                        <p class="mb-2">Validity: 30 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹199</span>
+                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">International Calling</h6>
+                            <span class="badge bg-info">New</span>
+                        </div>
+                        <p class="mb-1">100 mins to USA/Canada</p>
+                        <p class="mb-2">Validity: 7 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹149</span>
+                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">My Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <img src="img/user_profile.png" alt="User" class="rounded-circle" width="100" height="100">
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-secondary">Change Photo</button>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" value="John Doe">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="alternatePhone" class="form-label">Alternate Phone</label>
+                            <input type="tel" class="form-control" id="alternatePhone" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="mb-3">Account Settings</h6>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoRenewal" checked>
+                        <label class="form-check-label" for="autoRenewal">Auto-renewal of current plan</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="dataUsageAlert" checked>
+                        <label class="form-check-label" for="dataUsageAlert">Data usage alerts</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="roamingNotification" checked>
+                        <label class="form-check-label" for="roamingNotification">Roaming notifications</label>
+                    </div>
+                    
+                    <h6 class="mb-3 mt-4">Notification Preferences</h6>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="emailNotification" checked>
+                        <label class="form-check-label" for="emailNotification">Email notifications</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="smsNotification" checked>
+                        <label class="form-check-label" for="smsNotification">SMS notifications</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="marketingNotification">
+                        <label class="form-check-label" for="marketingNotification">Marketing offers</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Plan Expiring Soon</h6>
+                                <small class="text-muted">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Your current plan will expire in 7 days. Renew now to avoid service interruption.</p>
+                            <small class="text-primary">Tap to renew</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Special Offer Available</h6>
+                                <small class="text-muted">1 week ago</small>
+                            </div>
+                            <p class="mb-1">Get 50% extra data on your next recharge. Limited time offer!</p>
+                            <small class="text-primary">Tap to view</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Data Usage Alert</h6>
+                                <small class="text-muted">2 weeks ago</small>
+                            </div>
+                            <p class="mb-1">You've used 80% of your daily data limit.</p>
+                            <small class="text-primary">Tap to check usage</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Mark All as Read</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <footer class="footer mt-5 py-4" style="background: #222C25; color: #EAE7DC;">
         <div class="container">
@@ -167,39 +421,34 @@
                
                 <div class="col-md-4 mb-4">
                    
-        <div class="sm-icons"> 
-            <h3>Follow Us</h3>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-                <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-                <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
-                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
-                <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
-              </svg>
-            </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
+                        <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
+                      </svg>
+                    </div>
+                        </div>
+                    </div>
+                  
+                    <div class="text-center mt-4">
+                        <p class="mb-0">&copy; 2025 Volt Mobi. All rights reserved.</p>
+                    </div>
                 </div>
-            </div>
-          
-            <div class="text-center mt-4">
-                <p class="mb-0">&copy; 2025 Volt Mobi. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
+            </footer>
         
-        document.getElementById("userPhone").innerText = localStorage.getItem("userPhone") || "Not Found";
-        document.getElementById("userPhoneDisplay").innerText = localStorage.getItem("userPhone") || "Not Found";
-
-        function logout() {
-            localStorage.removeItem("userPhone");
-            window.location.href = "login.html";
-        }
-    </script>
-</body>
-</html>
+            <script>
+                
+                document.getElementById("userPhone").innerText = localStorage.getItem("userPhone") || "Not Found";
+                document.getElementById("userPhoneDisplay").innerText = localStorage.getItem("userPhone") || "Not Found";
+        
+                function logout() {
+                    localStorage.removeItem("userPhone");
+                    window.location.href = "login.html";
+                }
+            </script>
+        </body>
+        </html> 
