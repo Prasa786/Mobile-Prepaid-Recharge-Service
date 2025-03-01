@@ -248,7 +248,7 @@
 
 
 .recon {
-    background: url("img/Recharge.jpg") no-repeat center center/cover;
+    background: url("/Project MPRS/img/Recharge.jpg") no-repeat center center/cover;
     margin-bottom: 90px;
     padding: 60px 20px;
     color: #EAE7DC;
@@ -513,7 +513,8 @@
 
 
 .hero {
-    background: url(img/logban\ \(1\).png);
+    background: url("/Project MPRS/img/Log.jpg") center center/cover;
+    background-repeat: no-repeat;
     color: white;
     text-align: center;
     padding: 80px 20px;
@@ -766,70 +767,7 @@
 }
 
 
-.row-carousal {
-    padding: 40px 0;
-    background-color: #0C1D13;
-    max-width: fit-content;
-}
 
-.carousel-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-
-.carousel-item {
-    position: relative;
-    height: 500px;
-    overflow: hidden;
-}
-
-.carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; 
-   
-}
-
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%;
-    background-color: rgba(0, 0, 0, 0.3); 
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-    background-color: rgba(0, 0, 0, 0.5); 
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    filter: invert(1); 
-}
-
-
-.carousel-indicators {
-    bottom: 20px;
-}
-
-.carousel-indicators button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: none;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
-}
-
-.carousel-indicators button.active {
-    background-color: #B68D40;
-}
 
 
 @media (max-width: 768px) {

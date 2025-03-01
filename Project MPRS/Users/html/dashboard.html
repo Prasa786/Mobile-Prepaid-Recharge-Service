@@ -6,10 +6,11 @@
     <title>User Dashboard - VoltMobi</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="icon" href="img/212268702.png" type="image/png">
-    <link rel="stylesheet" href="dash.css" type="text/css">
+    <link rel="icon" href="/Project MPRS/img/212268702.png" type="image/png">
+    <link rel="stylesheet" href="/Project MPRS/css/dash.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 
@@ -17,7 +18,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #0C1D13, #1A3C34);">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="img/212268702.png" alt="VoltMobi Logo" height="40">
+                <img src="/Project MPRS/img/212268702.png" alt="VoltMobi Logo" height="50" class="me-2">
+                <span class="fw-bold text-white d-none d-md-inline">VoltMobi</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -43,8 +45,9 @@
                 </ul>
                 <div class="navbar-text ms-3 d-flex align-items-center">
                     <div class="dropdown">
+                      
                         <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
-                            <img src="img/user_profile.png" alt="User" class="rounded-circle" height="40">
+                            <img src="/Project MPRS/img/user-logo.png" alt="User" class="rounded-circle" height="40">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><div class="px-3 py-2">
@@ -67,7 +70,7 @@
     <div class="container mt-4">
        
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Welcome Back, <span id="userNameDisplay">User</span>!</h2>
+            <h2 class="fw-bold" id="welcome">Welcome Back, <span id="userNameDisplay">User</span>!</h2>
             <p class="lead">Your registered phone number: <strong id="userPhoneDisplay">(Prepaid)</strong></p>
         </div>
 
@@ -216,6 +219,36 @@
         </div>
     </div>
 
+
+
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-12">
+                <div class="card p-4">
+                    <h5 class="card-title fw-bold"><i class="bi bi-receipt me-2"></i>Recent Transactions</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTable">
+                                <!-- Transactions will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        <a href="history.html" class="btn btn-outline-primary btn-sm">View All Transactions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Recently Added - Personalized Recommendations -->
     <div class="container mb-5">
         <div class="card p-4">
@@ -231,7 +264,7 @@
                         <p class="mb-2">Validity: 30 days</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="fs-5 fw-bold">₹99</span>
-                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                            <a href="RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
                         </div>
                     </div>
                 </div>
@@ -245,7 +278,7 @@
                         <p class="mb-2">Validity: 30 days</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="fs-5 fw-bold">₹199</span>
-                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                            <a href="RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
                         </div>
                     </div>
                 </div>
@@ -259,7 +292,7 @@
                         <p class="mb-2">Validity: 7 days</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="fs-5 fw-bold">₹149</span>
-                            <button class="btn btn-sm btn-outline-primary">Get Now</button>
+                            <a href="RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
                         </div>
                     </div>
                 </div>
@@ -277,19 +310,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-4">
-                        <img src="img/user_profile.png" alt="User" class="rounded-circle" width="100" height="100">
+                        <img src="/Project MPRS/img/212268702.png" alt="User" class="rounded-circle" width="100" height="100">
                         <div class="mt-2">
                             <button class="btn btn-sm btn-outline-secondary">Change Photo</button>
                         </div>
                     </div>
-                    <form>
+                    <form id="profileForm">
                         <div class="mb-3">
                             <label for="fullName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullName" value="John Doe">
+                            <input type="text" class="form-control" id="fullName" value="Prasanna " disabled>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                            <input type="email" class="form-control" id="email" value="prasanna786@gmail.com">
                         </div>
                         <div class="mb-3">
                             <label for="alternatePhone" class="form-label">Alternate Phone</label>
@@ -303,7 +336,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUserProfile()">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -403,7 +436,7 @@
             <div class="row">
              
                 <div class="col-md-4 mb-4">
-                    <img src="img/212268702.png" height="45">
+                    <img src="/Project MPRS/img/212268702.png" height="45">
                     <h3>Volt Mobi</h3>
                     <p>Your trusted prepaid recharge service for fast, secure, and affordable mobile top-ups.</p>
                 </div>
@@ -418,37 +451,204 @@
                         <li><a href="#" class="text-decoration-none text-light">Contact Us</a></li>
                     </ul>
                 </div>
-               
                 <div class="col-md-4 mb-4">
-                   
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
-                      </svg>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
-                        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-                      </svg>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
-                        <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
-                      </svg>
-                    </div>
-                        </div>
-                    </div>
-                  
-                    <div class="text-center mt-4">
-                        <p class="mb-0">&copy; 2025 Volt Mobi. All rights reserved.</p>
+
+                    <h3>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt"></i> 123 Volt Street, Tech City, India</li>
+                        <li><i class="bi bi-telephone"></i> +91 123 456 7890</li>
+                        <li><i class="bi bi-envelope"></i> support@voltmobi.com</li>
+                    </ul>
+                    <div class="mt-3">
+                        <h5>Follow Us</h5>
+                        <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-light me-2"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
-            </footer>
-        
-            <script>
-                
-                document.getElementById("userPhone").innerText = localStorage.getItem("userPhone") || "Not Found";
-                document.getElementById("userPhoneDisplay").innerText = localStorage.getItem("userPhone") || "Not Found";
-        
-                function logout() {
-                    localStorage.removeItem("userPhone");
-                    window.location.href = "login.html";
+            </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 VoltMobi. All rights reserved.</p>
+                <p class="mb-0"><a href="#" class="text-light text-decoration-none">Privacy Policy</a> | <a href="#" class="text-light text-decoration-none">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Chart.js for Data Usage
+        const dataUsageCtx = document.getElementById('dataUsageChart').getContext('2d');
+        const dataUsageChart = new Chart(dataUsageCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [{
+                    label: 'Data Usage (GB)',
+                    data: [0.5, 1.2, 1.8, 1.5, 1.9, 2.0, 1.7],
+                    borderColor: '#0d6efd',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 2.5
+                    }
                 }
-            </script>
+            }
+        });
+    
+        // Logout Function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear user data from localStorage
+                localStorage.removeItem('userPhone');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('email');
+                localStorage.removeItem('alternatePhone');
+                localStorage.removeItem('address');
+    
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+    
+        // Update User Info on Page Load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve user data from localStorage (or set default values)
+            const userName = localStorage.getItem('userName') || 'User';
+            const userPhone = localStorage.getItem('userPhone') || '(Prepaid)';
+    
+            // Display user data in the navbar and welcome section
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userPhone').textContent = userPhone;
+            document.getElementById('userNameDisplay').textContent = userName;
+            document.getElementById('userPhoneDisplay').textContent = userPhone;
+        });
+    </script>
+    <script>
+        // Function to load user profile data into the modal
+        function loadUserProfile() {
+            // Retrieve user data from localStorage (or set default values)
+            const userProfile = {
+                fullName: localStorage.getItem('fullName') || 'John Doe',
+                email: localStorage.getItem('email') || 'prasanna786@gmail.com',
+                alternatePhone: localStorage.getItem('alternatePhone') || '',
+                address: localStorage.getItem('address') || ''
+            };
+    
+            // Populate the modal fields with user data
+            document.getElementById('fullName').value = userProfile.fullName;
+            document.getElementById('email').value = userProfile.email;
+            document.getElementById('alternatePhone').value = userProfile.alternatePhone;
+            document.getElementById('address').value = userProfile.address;
+        }
+    
+        // Function to save user profile data
+        function saveUserProfile() {
+            // Get updated values from the modal
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const alternatePhone = document.getElementById('alternatePhone').value;
+            const address = document.getElementById('address').value;
+    
+            // Save updated data to localStorage
+            localStorage.setItem('fullName', fullName);
+            localStorage.setItem('email', email);
+            localStorage.setItem('alternatePhone', alternatePhone);
+            localStorage.setItem('address', address);
+    
+            // Update the displayed user info
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userNameDisplay').textContent = fullName;
+    
+            // Close the modal
+            const profileModal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+            profileModal.hide();
+    
+            // Notify the user
+            alert('Profile updated successfully!');
+        }
+    
+        // Load user profile data when the modal is shown
+        document.getElementById('profileModal').addEventListener('show.bs.modal', loadUserProfile);
+        // Sample transaction data (in a real application, this would come from a backend)
+const sampleTransactions = [
+    {
+        date: "2025-02-25",
+        type: "Recharge",
+        description: "Unlimited Calls + 2GB/day (28 days)",
+        amount: "₹245",
+        status: "Completed"
+    },
+    {
+        date: "2025-02-20",
+        type: "Add-on",
+        description: "Weekend Data Pack (10GB)",
+        amount: "₹99",
+        status: "Completed"
+    },
+    {
+        date: "2025-02-15",
+        type: "Recharge",
+        description: "OTT Add-on (30 days)",
+        amount: "₹199",
+        status: "Completed"
+    }
+];
+
+// Function to load recent transactions
+function loadRecentTransactions() {
+    const transactionsTable = document.getElementById('transactionsTable');
+    let transactions = JSON.parse(localStorage.getItem('userTransactions')) || sampleTransactions;
+    
+    // Limit to 3 most recent transactions
+    transactions = transactions.slice(0, 3);
+    
+    transactionsTable.innerHTML = ''; // Clear existing rows
+    
+    transactions.forEach(transaction => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${transaction.date}</td>
+            <td>${transaction.type}</td>
+            <td>${transaction.description}</td>
+            <td>${transaction.amount}</td>
+            <td><span class="badge bg-${transaction.status === 'Completed' ? 'success' : 'warning'}">${transaction.status}</span></td>
+        `;
+        transactionsTable.appendChild(row);
+    });
+}
+
+// Function to add a new transaction
+function addTransaction(type, description, amount, status = "Completed") {
+    const newTransaction = {
+        date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+        type,
+        description,
+        amount,
+        status
+    };
+    
+    let transactions = JSON.parse(localStorage.getItem('userTransactions')) || sampleTransactions;
+    transactions.unshift(newTransaction); // Add to beginning of array
+    localStorage.setItem('userTransactions', JSON.stringify(transactions));
+    loadRecentTransactions(); // Refresh the display
+}
+
+// Load transactions when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadRecentTransactions();
+    
+    // Example: Add a new transaction (you can call this when a recharge is made)
+    // addTransaction("Recharge", "Unlimited Calls + 2GB/day (28 days)", "₹245");
+});
+    </script>
+    
         </body>
         </html> 

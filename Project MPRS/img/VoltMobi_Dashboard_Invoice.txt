@@ -1,0 +1,18 @@
+
+                VoltMobi Admin Dashboard Invoice
+                Date: 27/2/2025
+                Total Subscribers: 1,234
+                Active Plans: 789
+                Revenue (This Month): ₹1,23,456
+                Inactive Numbers: 2
+                
+                Recharge Plans:
+                ₹239 Plan: ₹239, 28 Days, 1.5GB/Day
+undefined: ₹299, 28 Days, 2GB/Day
+₹479 Plan: ₹479, 56 Days, 1.5GB/Day
+                
+                Transactions:
+                TRX-2851: John Doe, ₹239 Plan, 25/02/2025, ₹239, Success
+TRX-2850: Jane Smith, ₹299 Plan, 24/02/2025, ₹299, Failed
+TRX-2849: Robert Johnson, ₹479 Plan, 23/02/2025, ₹479, Pending
+            

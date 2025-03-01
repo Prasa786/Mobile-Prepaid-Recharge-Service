@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ | VoltMobi Help Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="faq.css" type="text/css">
-    <link rel="icon" href="img/212268702.png" type="image/icon">
+    <link rel="stylesheet" href="/Project MPRS/css/faq.css" type="text/css">
+    <link rel="icon" href="/Project MPRS/img/212268702.png" type="image/icon">
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg bg-emerald shadow-sm">
         <div class="container">
-         <a class="navbar-brand" href="index.html">
-                <img src="img/212268702.png" alt="VoltMobi Logo" height="40">
+            <a class="navbar-brand" href="index.html">
+                <img src="/Project MPRS/img/212268702.png" alt="VoltMobi Logo" height="50" class="me-2">
+                <span class="fw-bold text-white d-none d-md-inline">VoltMobi</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="plansDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Plans</a>
                         <ul class="dropdown-menu" aria-labelledby="plansDropdown">
@@ -53,7 +51,7 @@
                     </div>
                    
                     <a href="Login.html" class="user ms-3">
-                        <img src="img/user-logo.png" alt="User Logo" height="45">
+                        <img src="/Project MPRS/img/user-logo.png" alt="User Logo" height="45">
                     </a>
                 </div>
             </div>
@@ -100,19 +98,19 @@
         <h3 class="text-center">Didn't find what you're looking for?</h3>
         <div class="support-boxes">
             <div class="support-box">
-                <img src="img/chat-image.png" alt="Chat">
+                <img src="/Project MPRS/img/chat-image.png" alt="Chat">
                 <h5>Chat with us</h5>
                 <p>Let our friendly staff help you. We are available 24x7.</p>
                 <a href="#">Chat Now</a>
             </div>
             <div class="support-box">
-                <img src="img/mail-image.png" alt="Email">
+                <img src="/Project MPRS/img/mail-image.png" alt="Email">
                 <h5>Contact us</h5>
                 <p>We are just an email away. Reach us at <strong>customercare@VoltMobi.com</strong></p>
                 <a href="mailto:customercare@VoltMobi.com">Email Us</a>
             </div>
             <div class="support-box">
-                <img src="img/community-image.png" alt="WhatsApp">
+                <img src="/Project MPRS/img/community-image.png" alt="WhatsApp">
                 <h5>Connect with us on WhatsApp</h5>
                 <p>Get updates on your VoltMobi account, best offers & more.</p>
                 <a href="#">Click Here</a>
@@ -141,7 +139,7 @@
             <div class="row">
              
                 <div class="col-md-4 mb-4">
-                    <img src="img/212268702.png" height="45">
+                    <img src="/Project MPRS/img/212268702.png" height="45">
                     <h3>Volt Mobi</h3>
                     <p>Your trusted prepaid recharge service for fast, secure, and affordable mobile top-ups.</p>
                 </div>
@@ -182,41 +180,7 @@
             </div>
         </div>
     </footer>
-    <script>
-       
-        function filterFAQs() {
-            let input = document.getElementById("faqSearch").value.toLowerCase();
-            let faqs = document.querySelectorAll(".faq-item");
-            let noResults = document.getElementById("noResults");
-            let found = false;
-
-            faqs.forEach(faq => {
-                let question = faq.querySelector("h5").textContent.toLowerCase();
-                if (question.includes(input)) {
-                    faq.style.display = "block";
-                    found = true;
-                } else {
-                    faq.style.display = "none";
-                }
-            });
-
-            noResults.style.display = found ? "none" : "block";
-        }
-
-    
-        window.onscroll = function () {
-            let button = document.getElementById("backToTop");
-            if (document.documentElement.scrollTop > 100) {
-                button.style.display = "block";
-            } else {
-                button.style.display = "none";
-            }
-        };
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-    </script>
+        <script src="/Project MPRS/js/faq.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

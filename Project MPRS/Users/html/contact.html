@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - VoltMobi</title>
+    <style>
+        :root {
+            --dark-green-primary: #1a3c2a;
+            --dark-green-secondary: #2c5a3e;
+            --dark-green-accent: #3e7d55;
+            --light-green: #8bc4a3;
+            --cream: #f5f5dc;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-green-primary);
+            color: var(--cream);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--dark-green-secondary);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--cream);
+        }
+        
+        .nav-links a {
+            color: var(--light-green);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cream);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: var(--light-green);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 3px;
+            background-color: var(--dark-green-accent);
+        }
+        
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-form {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-item-icon {
+            background-color: var(--dark-green-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-green);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            background-color: var(--dark-green-secondary);
+            color: var(--cream);
+            border-radius: 4px;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            background-color: var(--dark-green-accent);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        button {
+            background-color: var(--dark-green-accent);
+            color: var(--cream);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--light-green);
+            color: var(--dark-green-primary);
+        }
+        
+        .map {
+            margin-top: 3rem;
+            background-color: var(--dark-green-secondary);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-green);
+            font-size: 1.2rem;
+        }
+        
+        
+
+        
+      
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        footer {
+            background-color: var(--dark-green-secondary);
+            text-align: center;
+            
+            
+    background: #222C25;
+    color: #EAE7DC;
+    padding: 40px 0;
+}
+        .footer h3 {
+    color: #B68D40;
+    margin-block-end: 20px;
+}
+
+.footer a {
+    color: #EAE7DC;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #B68D40;
+}
+.ms-2 p{
+    color: #EAE7DC;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VoltMobi</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Products</a>
+                <a href="#" class="active">Contact</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Get in Touch</h1>
+        <p>We'd love to hear from you. Fill out the form below or use our contact information to reach out.</p>
+        
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h2>Contact Information</h2>
+                <div class="info-item">
+                    <div class="info-item-icon">📍</div>
+                    <div>
+                        <strong>Address</strong>
+                        <p>123 Tech Avenue, Innovation City, 54321</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-item-icon">📞</div>
+                    <div>
+                        <strong>Phone</strong>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-item-icon">✉️</div>
+                    <div>
+                        <strong>Email</strong>
+                        <p>contact@voltmobi.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-item-icon">⏰</div>
+                    <div>
+                        <strong>Hours</strong>
+                        <p>Monday - Friday: 9AM - 5PM<br>
+                        Saturday: 10AM - 2PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h2>Send us a Message</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Your email address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" placeholder="What is this regarding?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Tell us what's on your mind..."></textarea>
+                    </div>
+                    
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="map">
+            <p>Map Location Placeholder</p>
+        </div>
+    </div>
+    
+    <footer >
+       
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 VoltMobi. All rights reserved.</p>
+                <p class="mb-0"><a href="#" class="text-light text-decoration-none">Privacy Policy</a> | <a href="#" class="text-light text-decoration-none">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
