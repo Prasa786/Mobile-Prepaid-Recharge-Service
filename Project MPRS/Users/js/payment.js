@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     // Plan summary initialization
     const planName = localStorage.getItem("planName") || "Premium Plan";
@@ -5,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const planDetails = localStorage.getItem("planDetails") || "1.5GB/day";
     const planValidity = localStorage.getItem("planValidity") || "28 days";
     const planCalls = localStorage.getItem("planCalls") || "Unlimited";
+    const mobileNumber = localStorage.getItem("mobileNumber") || "";
 
     document.getElementById("summaryPlanName").innerText = `Plan: ${planName}`;
     document.getElementById("summaryPrice").innerText = `Price: ₹${planPrice}`;
@@ -22,6 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (amount > 500) {
         document.getElementById("emiOption").style.display = "block";
+    }
+
+    // Check for mobile number and enable/disable payment
+    if (!mobileNumber) {
+        document.getElementById("payButton").disabled = true;
+        document.getElementById("paymentOptions").innerHTML = `<p class="text-danger">Please set a mobile number in your profile to proceed with payment.</p>`;
+        $('#paymentErrorModal').modal('show');
+        document.getElementById("errorMessage").innerText = "No mobile number found. Please update your profile.";
+        return;
     }
 
     // Payment options handling
@@ -205,8 +216,9 @@ function validatePaymentForm() {
 }
 
 function validatePayment() {
-    const isValid = validatePaymentForm();
-    document.getElementById("payButton").disabled = !isValid;
+    const mobileNumber = localStorage.getItem("mobileNumber");
+    const isFormValid = validatePaymentForm();
+    document.getElementById("payButton").disabled = !mobileNumber || !isFormValid;
 }
 
 function handleSuccessfulPayment() {
@@ -217,17 +229,12 @@ function handleSuccessfulPayment() {
     const mobileNumber = localStorage.getItem("mobileNumber");
 
     document.getElementById("transactionId").innerText = transactionId;
+    document.getElementById("transactionMobile").innerText = `+91 ${mobileNumber}`;
     document.getElementById("transactionDate").innerText = now.toLocaleDateString();
     document.getElementById("transactionTime").innerText = now.toLocaleTimeString();
     document.getElementById("transactionPaymentMethod").innerText = method.toUpperCase();
     document.getElementById("transactionAmount").innerText = `₹${totalAmount}`;
     document.getElementById("transactionGift").innerText = "5GB Extra Data";
-
-    // Add mobile number to transaction details
-    const transactionDetails = document.querySelector("#paymentSuccessModal .transaction-details");
-    const mobilePara = document.createElement("p");
-    mobilePara.innerHTML = `<strong>Mobile Number:</strong> +91 ${mobileNumber}`;
-    transactionDetails.insertBefore(mobilePara, transactionDetails.querySelector("p:nth-child(2)"));
 
     $('#paymentSuccessModal').modal('show');
 }
@@ -245,6 +252,10 @@ function startCountdown() {
             redirectToDashboard();
         }
     }, 1000);
+}
+
+function showPaymentError() {
+    $('#paymentErrorModal').modal('show');
 }
 
 function redirectToDashboard() {
@@ -268,19 +279,6 @@ function applyPromoCode() {
         document.getElementById("totalLabel").innerText = `Total Amount: ₹${totalAmount}`;
         promoMessage.innerHTML = `<p class="text-success">Promo code applied! You saved ₹${discount}.</p>`;
     } else {
-        promoMessage.innerHTML = `<p class="text-danger">Invalid promo code. Please try again.</p>`;
+        promoMessage.innerHTML = `<p style="color: var(--danger-color);">Invalid promo code. Please try again.</p>`;
     }
-}
-window.onscroll = function() {
-    const backToTop = document.querySelector('.back-to-top');
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        backToTop.style.display = 'flex'; // Show the button
-    } else {
-        backToTop.style.display = 'none'; // Hide the button
-    }
-};
-
-// Function to scroll to the top of the page
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
