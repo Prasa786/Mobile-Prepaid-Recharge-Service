@@ -9,6 +9,7 @@
     <link rel="icon" href="/Project MPRS/img/212268702.png" type="image/icon">
     <link rel="stylesheet" href="/Project MPRS/admin/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
    
 </head>
 <body>
@@ -23,18 +24,18 @@
                 <p id="adminRole">Super Admin</p>
             </div>
             <nav class="sidebar-nav">
-                <a data-route="analytics" class="active"><i class="fas fa-chart-bar"></i> Analytics</a>
-                <a data-route="expiring-plans"><i class="fas fa-calendar-times"></i> Expiring Plans</a>
-                <a data-route="inactive-numbers"><i class="fas fa-phone-slash"></i> Inactive Numbers</a>
-                <a data-route="recharge-plans"><i class="fas fa-list"></i> Recharge Plans</a>
-                <a data-route="transaction-history"><i class="fas fa-history"></i> Transaction History</a>
-                <a data-route="notifications"><i class="fas fa-bell"></i> Notifications</a>
-                <a data-route="support-tickets"><i class="fas fa-ticket-alt"></i> Support Tickets</a>
-                <a data-route="feedback-reports"><i class="fas fa-comment"></i> Feedback Reports</a>
-                <a data-route="admin-settings"><i class="fas fa-cog"></i> Admin Settings</a>
-                <a data-route="plans"><i class="fas fa-credit-card"></i> Plans</a>
-                <a data-route="transactions"><i class="fas fa-exchange-alt"></i> Transactions</a>
-                <a data-route="reports"><i class="fas fa-chart-bar"></i> Reports</a>
+                <a data-route="analytics" class="active" onclick="navigateTo('analytics')"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a data-route="expiring-plans" onclick="navigateTo('expiring-plans')"><i class="fas fa-calendar-times"></i> Expiring Plans</a>
+                <a data-route="inactive-numbers" onclick="navigateTo('inactive-numbers')"><i class="fas fa-phone-slash"></i> Inactive Numbers</a>
+                <a data-route="recharge-plans" onclick="navigateTo('recharge-plans')"><i class="fas fa-list"></i> Recharge Plans</a>
+                <a data-route="transaction-history" onclick="navigateTo('transaction-history')"><i class="fas fa-history"></i> Transaction History</a>
+                <a data-route="notifications" onclick="navigateTo('notifications')"><i class="fas fa-bell"></i> Notifications</a>
+                <a data-route="support-tickets" onclick="navigateTo('support-tickets')"><i class="fas fa-ticket-alt"></i> Support Tickets</a>
+                <a data-route="feedback-reports" onclick="navigateTo('feedback-reports')"><i class="fas fa-comment"></i> Feedback Reports</a>
+                <a data-route="admin-settings" onclick="navigateTo('admin-settings')"><i class="fas fa-cog"></i> Admin Settings</a>
+                <a data-route="plans" onclick="navigateTo('plans')"><i class="fas fa-credit-card"></i> Plans</a>
+                <a data-route="transactions" onclick="navigateTo('transactions')"><i class="fas fa-exchange-alt"></i> Transactions</a>
+                <a data-route="reports" onclick="navigateTo('reports')"><i class="fas fa-chart-bar"></i> Reports</a>
             </nav>
             <div class="sidebar-footer">
                 <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
