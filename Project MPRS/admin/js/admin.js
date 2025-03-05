@@ -56,11 +56,23 @@ const routes = {
                     <p id="inactiveNumbers">${inactiveNumbersData.length}</p>
                 </div>
             </div>
-            <div class="analytics-charts mt-4">
-                <div class="chart-container"><canvas id="planDistributionChart"></canvas></div>
-                <div class="chart-container"><canvas id="revenueChart"></canvas></div>
-                <div class="chart-container"><canvas id="userGrowthChart"></canvas></div>
-                <div class="chart-container"><canvas id="transactionStatusChart"></canvas></div>
+            <div class="analytics-charts-grid mt-4">
+                <div class="chart-item">
+                    <h4>Plan Distribution</h4>
+                    <div class="chart-container"><canvas id="planDistributionChart"></canvas></div>
+                </div>
+                <div class="chart-item">
+                    <h4>Revenue</h4>
+                    <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                </div>
+                <div class="chart-item">
+                    <h4>User Growth</h4>
+                    <div class="chart-container"><canvas id="userGrowthChart"></canvas></div>
+                </div>
+                <div class="chart-item">
+                    <h4>Transaction Status</h4>
+                    <div class="chart-container"><canvas id="transactionStatusChart"></canvas></div>
+                </div>
             </div>
             <div class="action-buttons mt-3">
                 <button class="btn-primary" onclick="downloadInvoice()"><i class="fas fa-file-pdf"></i> Download Invoice (PDF)</button>
@@ -474,7 +486,7 @@ function navigateTo(route) {
             <h2>Admin Dashboard</h2>
             <div class="header-controls" style="display: flex; background-color: #0C1D13; border-radius: 10px;">
                 <div class="admin-dropdown">
-                    <img src="/Project MPRS/img/user_profile.png" alt="admin">
+                    <img src="/Project MPRS/admin/img/user_profile.png" alt="admin">
                     <div class="dropdown-content">
                         <a onclick="navigateTo('admin-profile')">My Profile</a>
                         <a onclick="navigateTo('admin-settings')">Settings</a>
