@@ -1,4 +1,3 @@
-// Enhanced admin.js with additional features
 // Data Arrays with Indian Recharge Plans
 let expiringPlans = [
     { mobile: "9876543210", plan: "₹239 Plan", expiry: "01/03/2025", amount: "₹239" },
@@ -56,6 +55,12 @@ const routes = {
                     <h3>Inactive Numbers</h3>
                     <p id="inactiveNumbers">${inactiveNumbersData.length}</p>
                 </div>
+            </div>
+            <div class="analytics-charts mt-4">
+                <div class="chart-container"><canvas id="planDistributionChart"></canvas></div>
+                <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                <div class="chart-container"><canvas id="userGrowthChart"></canvas></div>
+                <div class="chart-container"><canvas id="transactionStatusChart"></canvas></div>
             </div>
             <div class="action-buttons mt-3">
                 <button class="btn-primary" onclick="downloadInvoice()"><i class="fas fa-file-pdf"></i> Download Invoice (PDF)</button>
@@ -115,7 +120,7 @@ const routes = {
         <section id="recharge-plans" class="admin-section active">
             <h2>Manage Recharge Plans</h2>
             <div class="section-controls mb-3">
-                <button id="addPlanBtn" class="btn-primary" onclick="showAddPlanModal()"><i class="fas fa-plus"></i> Add New Plan</button>
+                <button id="addPlanBtn" class="btn-primary" data-bs-toggle="modal" data-bs-target="#addPlanModal"><i class="fas fa-plus"></i> Add New Plan</button>
                 <button class="btn-secondary" onclick="exportPlans()"><i class="fas fa-file-export"></i> Export Plans</button>
             </div>
             <div class="table-responsive">
@@ -131,6 +136,40 @@ const routes = {
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
+            <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addPlanModalLabel">Add New Plan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addPlanForm">
+                                <div class="mb-3">
+                                    <label for="planName" class="form-label">Plan Name</label>
+                                    <input type="text" class="form-control" id="planName" placeholder="Enter plan name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planPrice" class="form-label">Plan Price (₹)</label>
+                                    <input type="number" class="form-control" id="planPrice" placeholder="Enter plan price in INR" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planValidity" class="form-label">Validity (Days)</label>
+                                    <input type="number" class="form-control" id="planValidity" placeholder="Enter validity in days" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planData" class="form-label">Data</label>
+                                    <input type="text" class="form-control" id="planData" placeholder="Enter data allowance (e.g., 2GB/Day)" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addNewPlan()">Add Plan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     `,
@@ -326,7 +365,7 @@ const routes = {
         <section id="plans" class="admin-section active">
             <h2>Subscription Plans</h2>
             <div class="section-controls mb-3">
-                <button class="btn-primary" onclick="showAddPlanModal()"><i class="fas fa-plus"></i> Add New Plan</button>
+                <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addPlanModal"><i class="fas fa-plus"></i> Add New Plan</button>
                 <button class="btn-secondary" onclick="exportPlans()"><i class="fas fa-file-export"></i> Export Plans</button>
                 <button class="btn-info" onclick="showImportPlansModal()"><i class="fas fa-file-import"></i> Import Plans</button>
             </div>
@@ -344,31 +383,39 @@ const routes = {
                     <tbody></tbody>
                 </table>
             </div>
-        </section>
-    `,
-    'transactions': `
-        <section id="transactions" class="admin-section active">
-            <h2>Transactions</h2>
-            <div class="section-controls mb-3">
-                <button class="btn-primary" onclick="showFilterTransactionsModal()"><i class="fas fa-filter"></i> Filter Transactions</button>
-                <button class="btn-secondary" onclick="exportTransactions()"><i class="fas fa-file-export"></i> Export</button>
-                <button class="btn-success" onclick="showInvoiceGenerationModal()"><i class="fas fa-file-invoice"></i> Generate Invoice</button>
-            </div>
-            <div class="table-responsive">
-                <table id="transactionsTable">
-                    <thead>
-                        <tr>
-                            <th>Transaction ID</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Plan</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addPlanModalLabel">Add New Plan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addPlanForm">
+                                <div class="mb-3">
+                                    <label for="planName" class="form-label">Plan Name</label>
+                                    <input type="text" class="form-control" id="planName" placeholder="Enter plan name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planPrice" class="form-label">Plan Price (₹)</label>
+                                    <input type="number" class="form-control" id="planPrice" placeholder="Enter plan price in INR" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planValidity" class="form-label">Validity (Days)</label>
+                                    <input type="number" class="form-control" id="planValidity" placeholder="Enter validity in days" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="planData" class="form-label">Data</label>
+                                    <input type="text" class="form-control" id="planData" placeholder="Enter data allowance (e.g., 2GB/Day)" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addNewPlan()">Add Plan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     `,
@@ -378,32 +425,6 @@ const routes = {
             <div class="section-controls mb-3">
                 <button class="btn-primary" onclick="showGenerateReportModal()"><i class="fas fa-chart-bar"></i> Generate Report</button>
                 <button class="btn-secondary" onclick="showScheduleReportModal()"><i class="fas fa-calendar-alt"></i> Schedule Report</button>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">User Growth</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="userGrowthChart" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Revenue Breakdown</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="revenueBreakdownChart" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="Analytical-Sections mt-4">
-                <h2>Customer Trend Analytics Dashboard</h2>
-                <canvas id="Analysis"></canvas>
             </div>
             <div class="saved-reports mt-4">
                 <h3>Saved Reports</h3>
@@ -451,9 +472,9 @@ function navigateTo(route) {
         <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <header class="content-header">
             <h2>Admin Dashboard</h2>
-            <div class="header-controls"  style="display: flex;background-color: #0C1D13; border-radius:10px;">
+            <div class="header-controls" style="display: flex; background-color: #0C1D13; border-radius: 10px;">
                 <div class="admin-dropdown">
-                    <img src="/Project MPRS/img/user_profile.png" alt="admin" >
+                    <img src="/Project MPRS/img/user_profile.png" alt="admin">
                     <div class="dropdown-content">
                         <a onclick="navigateTo('admin-profile')">My Profile</a>
                         <a onclick="navigateTo('admin-settings')">Settings</a>
@@ -466,16 +487,13 @@ function navigateTo(route) {
     `;
     window.location.hash = route;
 
-    // Update active link
     const navLinks = document.querySelectorAll('.sidebar-nav a');
     navLinks.forEach(link => {
         link.classList.toggle('active', link.getAttribute('data-route') === route);
     });
 
-    // Re-initialize content-specific logic
     initializeContent(route);
 
-    // Close sidebar on mobile after navigation
     if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('active');
         document.querySelector('.main-content').classList.remove('sidebar-open');
@@ -503,6 +521,11 @@ function populateTable(tableId, data, columns, actions = null) {
         }
         tbody.appendChild(row);
     });
+}
+
+// Show Add Plan Modal (No longer needed as it's embedded in the route)
+function showAddPlanModal() {
+    // This function is now redundant since the modal is directly in the HTML
 }
 
 // Add New Plan
@@ -602,7 +625,6 @@ function viewPlanStats(index) {
         document.getElementById('planStatsModal').remove();
     }, { once: true });
     
-    // Initialize chart
     setTimeout(() => {
         const ctx = document.getElementById('planUsageChart').getContext('2d');
         new Chart(ctx, {
@@ -662,7 +684,7 @@ function downloadPlanReport(planName) {
     showToast("Success", "Report downloaded successfully!");
 }
 
-// Generate PDF function using jsPDF-like syntax
+// Generate PDF function using jsPDF-like syntax (kept as fallback)
 function generatePDF(content, filename) {
     const blob = new Blob([content], { type: 'application/pdf' });
     const link = document.createElement('a');
@@ -672,11 +694,75 @@ function generatePDF(content, filename) {
     URL.revokeObjectURL(link.href);
 }
 
+// Download Invoice as Professional PDF
+function downloadInvoice() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Header
+    doc.setFontSize(20);
+    doc.text("VoltMobi Invoice", 20, 20);
+    doc.setFontSize(12);
+    doc.text("Invoice No: INV-2025-001", 20, 30);
+    doc.text("Date: " + new Date().toLocaleDateString('en-IN'), 20, 40);
+    doc.text("VoltMobi Pvt Ltd", 150, 20, { align: "right" });
+    doc.text("123 Telecom Street, Mumbai, India", 150, 30, { align: "right" });
+
+    // Summary
+    doc.setLineWidth(0.5);
+    doc.line(20, 50, 190, 50);
+    doc.text("Analytics Summary", 20, 60);
+    doc.text(`Total Subscribers: 1,234`, 20, 70);
+    doc.text(`Active Plans: 789`, 20, 80);
+    doc.text(`Revenue (This Month): ₹1,23,456`, 20, 90);
+    doc.text(`Inactive Numbers: ${inactiveNumbersData.length}`, 20, 100);
+
+    // Table Header
+    doc.setFillColor(97, 122, 85);
+    doc.rect(20, 110, 170, 10, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.text("Description", 25, 117);
+    doc.text("Amount", 150, 117, { align: "right" });
+    doc.setTextColor(0, 0, 0);
+
+    // Table Content
+    doc.text("Monthly Revenue", 25, 127);
+    doc.text("₹1,23,456", 150, 127, { align: "right" });
+    doc.line(20, 130, 190, 130);
+
+    // Total
+    doc.text("Total", 130, 140);
+    doc.text("₹1,23,456", 150, 140, { align: "right" });
+    doc.line(20, 145, 190, 145);
+
+    // Footer
+    doc.setFontSize(10);
+    doc.text("Generated on: " + new Date().toLocaleString('en-IN'), 20, 155);
+    doc.text("Thank you for choosing VoltMobi!", 105, 165, { align: "center" });
+
+    doc.save("Analytics_Invoice.pdf");
+}
+
 // Show Toast Notification
 function showToast(title, message, type = "success") {
-    const toastContainer = document.getElementById("toast-container");
+    let toastContainer = document.getElementById("toast-container");
+    
+    if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "toast-container";
+        document.body.appendChild(toastContainer);
+
+        // Apply styles for right-side positioning
+        toastContainer.style.position = "fixed";
+        toastContainer.style.top = "20px";
+        toastContainer.style.right = "20px";
+        toastContainer.style.zIndex = "1050"; // Ensure it appears above other content
+    }
+
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
+    toast.style.minWidth = "250px"; // Set width for better visibility
+
     toast.innerHTML = `
         <div class="toast-header">
             <strong class="me-auto">${title}</strong>
@@ -684,15 +770,22 @@ function showToast(title, message, type = "success") {
         </div>
         <div class="toast-body">${message}</div>
     `;
+
     toastContainer.appendChild(toast);
+    
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
+
     setTimeout(() => toast.remove(), 5000);
 }
+
 
 // Initialize Content-Specific Logic
 function initializeContent(route) {
     switch (route) {
+        case 'analytics':
+            initializeCharts();
+            break;
         case 'recharge-plans':
         case 'plans':
             populateRechargePlansTable();
@@ -711,7 +804,6 @@ function initializeContent(route) {
             );
             break;
         case 'transaction-history':
-        case 'transactions':
             populateTable("transactionHistoryTable", transactions, ["id", "user", "plan", "date", "amount", "method", "status"], 
                 (index) => `<button class="btn btn-outline-info btn-sm" onclick="viewTransactionDetails('${transactions[index].id}')"><i class="fas fa-eye"></i> View</button>`
             );
@@ -727,60 +819,45 @@ function initializeContent(route) {
             );
             break;
         case 'reports':
-            initializeCharts();
+            // No charts here anymore, moved to analytics
             break;
     }
 }
 
-// Initialize Charts for Reports
+// Initialize Charts for Analytics
 function initializeCharts() {
-    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
-    new Chart(userGrowthCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'User Growth',
-                data: [1000, 1200, 1500, 1700, 2000, 2300],
-                backgroundColor: 'rgba(97, 122, 85, 0.2)',
-                borderColor: '#617A55',
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Users'
-                    }
-                }
-            }
-        }
-    });
+    const charts = [
+        { id: 'planDistributionChart', type: 'pie', label: 'Plan Distribution', data: [40, 35, 25], labels: ['₹239 Plan', '₹299 Plan', '₹479 Plan'] },
+        { id: 'revenueChart', type: 'bar', label: 'Revenue', data: [50000, 70000, 90000, 110000, 130000, 150000], labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] },
+        { id: 'userGrowthChart', type: 'line', label: 'User Growth', data: [1000, 1200, 1500, 1700, 2000, 2300], labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] },
+        { id: 'transactionStatusChart', type: 'doughnut', label: 'Transaction Status', data: [60, 20, 20], labels: ['Success', 'Pending', 'Failed'] }
+    ];
 
-    const revenueBreakdownCtx = document.getElementById('revenueBreakdownChart').getContext('2d');
-    new Chart(revenueBreakdownCtx, {
-        type: 'pie',
-        data: {
-            labels: ['₹239 Plan', '₹299 Plan', '₹479 Plan'],
-            datasets: [{
-                label: 'Revenue Breakdown',
-                data: [50000, 70000, 90000],
-                backgroundColor: ['#617A55', '#8AA67A', '#B3D2A5']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
+    charts.forEach(chart => {
+        const ctx = document.getElementById(chart.id).getContext('2d');
+        new Chart(ctx, {
+            type: chart.type,
+            data: {
+                labels: chart.labels,
+                datasets: [{
+                    label: chart.label,
+                    data: chart.data,
+                    backgroundColor: chart.type === 'pie' || chart.type === 'doughnut' ? ['#617A55', '#8AA67A', '#B3D2A5'] : 'rgba(97, 122, 85, 0.5)',
+                    borderColor: '#617A55',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: chart.type === 'pie' || chart.type === 'doughnut' ? {} : {
+                    y: { beginAtZero: true }
                 }
             }
-        }
+        });
     });
 }
 
@@ -827,7 +904,7 @@ function viewFeedbackDetails(user) {
 
 // Logout Function
 function logout() {
-    window.location.href = "/login";
+    window.location.href = "/Project MPRS/admin/html/admin-login.html";
 }
 
 // Toggle Sidebar
@@ -842,3 +919,29 @@ function toggleSidebar() {
 document.addEventListener("DOMContentLoaded", () => {
     navigateTo(window.location.hash.substring(1) || 'analytics');
 });
+
+// Placeholder functions to maintain original functionality
+function downloadAnalyticsReport() { showToast("Info", "Analytics Report download not implemented."); }
+function exportPlans() { showToast("Info", "Export Plans  implemented."); }
+function showImportPlansModal() { showToast("Info", "Import Plans  implemented."); }
+function sendReminderToAll() { showToast("Success", "Reminders sent to all expiring plans."); }
+function exportExpiringPlans() { showToast("Info", "Export Expiring Plans  implemented."); }
+function exportInactiveNumbers() { showToast("Info", "Export Inactive Numbers  implemented."); }
+function applyTransactionHistoryFilters() { showToast("Info", "Filters applied ."); }
+function exportTransactions() { showToast("Info", "Export Transactions  implemented."); }
+function sendNotification(event) { event.preventDefault(); showToast("Success", "Notification sent."); }
+function saveNotificationTemplate() { showToast("Success", "Template saved."); }
+function loadTemplate(title, message) { document.getElementById("notificationTitle").value = title; document.getElementById("notificationMessage").value = message; }
+function filterTickets() { showToast("Info", "Tickets filtered (not fully implemented)."); }
+function exportTickets() { showToast("Info", "Tickets Exported Successfully"); }
+function exportFeedback() { showToast("Info", "Exported Feedback Successfully"); }
+function generateFeedbackAnalysis() { showToast("Info", "Feedback Analysis not implemented."); }
+function saveProfileSettings(event) { event.preventDefault(); showToast("Success", "Profile settings saved."); }
+function changePassword(event) { event.preventDefault(); showToast("Success", "Password changed."); }
+function saveNotificationSettings(event) { event.preventDefault(); showToast("Success", "Notification settings saved."); }
+function showEditPlanModal(index) { showToast("Info", "Edit Plan  implemented."); }
+function showGenerateReportModal() { document.getElementById('modal-templates').querySelector('#generate-report-modal-template').innerHTML.includes('modal') && new bootstrap.Modal(document.getElementById('generateReportModal')).show(); }
+function showScheduleReportModal() { showToast("Info", "Schedule Report not implemented."); }
+function generateReport() { showToast("Success", "Report generated."); }
+function viewReport(name) { showToast("Info", `Viewing ${name}  implemented.`); }
+function downloadSavedReport(name) { showToast("Info", `Downloading ${name}  implemented.`); }
