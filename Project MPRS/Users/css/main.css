@@ -157,7 +157,7 @@ body {
 /* Hero Section */
 .hero {
     position: relative;
-    background: url("/Project MPRS/img/Log.jpg") no-repeat center center/cover;
+    background: url("/Project MPRS/Users/img/Log.jpg") no-repeat center center/cover;
     color: white;
     text-align: center;
     padding: 120px 20px;
@@ -293,7 +293,7 @@ body {
 
 /* Recharge Section */
 .recon {
-    background: url("/Project MPRS/img/Recharge.jpg") no-repeat center center/cover;
+    background: url("/Project MPRS/Users/img/Recharge.jpg") no-repeat center center/cover;
     margin-bottom: 90px;
     padding: 60px 20px;
     color: #EAE7DC;
