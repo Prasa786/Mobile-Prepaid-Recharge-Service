@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - VoltMobi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" href="/Users/img/212268702.png" type="image/png">
+    <link rel="stylesheet" href="/Users/css/dash.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+   
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #0C1D13, #1A3C34);">
+        <div class="container">
+            <a class="navbar-brand" href="/Users/index.html">
+                <img src="/Users/img/212268702.png" alt="VoltMobi Logo" height="50" class="me-2">
+                <span class="fw-bold text-white d-none d-md-inline">VoltMobi</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/Users/index.html">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="plansDropdown" data-bs-toggle="dropdown">Plans</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Users/html/RechargePlans.html">Recommended Packs</a></li>
+                            <li><a class="dropdown-item" href="/Users/html/RechargePlans.html">Data Plans</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" data-bs-toggle="dropdown">Help</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Users/html/faq.html">FAQs</a></li>
+                            <li><a class="dropdown-item" href="/Users/html/contact.html">Contact Support</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#notificationsModal"><i class="bi bi-bell"></i> <span class="badge bg-danger">3</span></a></li>
+                </ul>
+                <div class="navbar-text ms-3 d-flex align-items-center">
+                    <div class="dropdown">
+                      
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+                            <img src="/Users/img/user-logo.png" alt="User" class="rounded-circle" height="40">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><div class="px-3 py-2">
+                                <p class="mb-0 fw-bold" id="userName">User</p>
+                                <p class="mb-0 text-muted" id="userPhone">(Prepaid)</p>
+                            </div></li>
+                            <li><hr class="dropdown-divider" style="color: #0C1D13;"></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal" style="color: #1A3C34;"><i class="bi bi-person"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal" style="color: #1A3C34;"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()" style="color: #1A3C34;"><i class="bi bi-box-arrow-right" ></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   
+    <div class="container mt-4">
+       
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" id="welcome">Welcome Back, <span id="userNameDisplay">User</span>!</h2>
+            <p class="lead">Your registered phone number: <strong id="userPhoneDisplay">(Prepaid)</strong></p>
+        </div>
+
+        <!-- Quick Stats Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-primary mb-0"><i class="bi bi-wallet2"></i> ₹245</h4>
+                    <p class="mb-0">Account Balance</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-success mb-0"><i class="bi bi-calendar-check"></i> 21</h4>
+                    <p class="mb-0">Days Remaining</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-warning mb-0"><i class="bi bi-star"></i> 84</h4>
+                    <p class="mb-0">Loyalty Points</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h4 class="text-danger mb-0"><i class="bi bi-gift"></i> 2</h4>
+                    <p class="mb-0">Available Offers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-12">
+                <div class="card p-4">
+                    <h5 class="card-title fw-bold">Active Packs</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-3">
+                                <h6>Unlimited Calls</h6>
+                                <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-3">
+                                <h6>2GB/day Data</h6>
+                                <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-3">
+                                <h6>100 SMS/day</h6>
+                                <p>Validity: 28 Days</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-success">Active</span>
+                                    <small>Expires: Mar 25, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title fw-bold">Data Usage</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="card-text mb-0">Remaining Data: <strong>1.5GB</strong> / 2.0GB</p>
+                        <p class="card-text mb-0 text-muted">Resets at midnight</p>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                    </div>
+                    <div class="mt-3">
+                        <canvas id="dataUsageChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title fw-bold">Call Usage</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="card-text mb-0">Remaining Minutes: <strong>200</strong> (Unlimited)</p>
+                        <p class="card-text mb-0 text-success">Unlimited Plan</p>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="row g-2">
+                            <div class="col-sm-6">
+                                <div class="card bg-light p-2">
+                                    <p class="mb-1 small text-muted">Most called contact</p>
+                                    <h6 class="mb-0">Mom (18 mins)</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card bg-light p-2">
+                                    <p class="mb-1 small text-muted">Recent call</p>
+                                    <h6 class="mb-0">Work (5 mins ago)</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-currency-exchange me-2"></i>Recharge Now</h5>
+                    <p class="card-text">Top up your prepaid account instantly.<br> examine new plans and upgrade</p>
+                    <a href="/Users/html/RechargePlans.html"><button class="btn btn-primary">Recharge</button></a>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-clock-history me-2"></i>View Transactions</h5>
+                    <p class="card-text">Check your recharge and usage history.</p>
+                    <br>
+                    <a href="/Users/html/history.html" ><button class="btn btn-secondary">View History</button></a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center p-4 h-100">
+                    <h5 class="card-title fw-bold"><i class="bi bi-lightning-charge me-2"></i>Current Plan</h5>
+                    <p class="card-text">Unlimited Calls + 2GB/day</p>
+                    <p class="card-text">Validity: 28 Days</p>
+                    <a href="/Users/html/RechargePlans.html"><button class="btn btn-outline-primary">Upgrade Plan</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-12">
+                <div class="card p-4">
+                    <h5 class="card-title fw-bold"><i class="bi bi-receipt me-2"></i>Recent Transactions</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTable">
+                                <!-- Transactions will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        <a href="history.html" class="btn btn-outline-primary btn-sm">View All Transactions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Recently Added - Personalized Recommendations -->
+    <div class="container mb-5">
+        <div class="card p-4">
+            <h5 class="card-title fw-bold"><i class="bi bi-lightbulb me-2"></i>Recommended For You</h5>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="card p-3 border-primary">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Weekend Data Pack</h6>
+                            <span class="badge bg-primary">Best Value</span>
+                        </div>
+                        <p class="mb-1">Extra 10GB for weekends</p>
+                        <p class="mb-2">Validity: 30 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹99</span>
+                            <a href="/Users/html/RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">OTT Add-on</h6>
+                            <span class="badge bg-warning">Popular</span>
+                        </div>
+                        <p class="mb-1">Disney+ & Netflix Premium</p>
+                        <p class="mb-2">Validity: 30 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹199</span>
+                            <a href="/Users/html/RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">International Calling</h6>
+                            <span class="badge bg-info">New</span>
+                        </div>
+                        <p class="mb-1">100 mins to USA/Canada</p>
+                        <p class="mb-2">Validity: 7 days</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">₹149</span>
+                            <a href="/Users/html/RechargePlans.html"><button class="btn btn-sm btn-outline-primary">Get Now</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">My Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <img src="/Users/img/212268702.png" alt="User" class="rounded-circle" width="100" height="100">
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-secondary">Change Photo</button>
+                        </div>
+                    </div>
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" value="Prasanna " disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="prasanna786@gmail.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="alternatePhone" class="form-label">Alternate Phone</label>
+                            <input type="tel" class="form-control" id="alternatePhone" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUserProfile()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="mb-3">Account Settings</h6>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoRenewal" checked>
+                        <label class="form-check-label" for="autoRenewal">Auto-renewal of current plan</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="dataUsageAlert" checked>
+                        <label class="form-check-label" for="dataUsageAlert">Data usage alerts</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="roamingNotification" checked>
+                        <label class="form-check-label" for="roamingNotification">Roaming notifications</label>
+                    </div>
+                    
+                    <h6 class="mb-3 mt-4">Notification Preferences</h6>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="emailNotification" checked>
+                        <label class="form-check-label" for="emailNotification">Email notifications</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="smsNotification" checked>
+                        <label class="form-check-label" for="smsNotification">SMS notifications</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="marketingNotification">
+                        <label class="form-check-label" for="marketingNotification">Marketing offers</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Plan Expiring Soon</h6>
+                                <small class="text-muted">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Your current plan will expire in 7 days. Renew now to avoid service interruption.</p>
+                            <small class="text-primary">Tap to renew</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Special Offer Available</h6>
+                                <small class="text-muted">1 week ago</small>
+                            </div>
+                            <p class="mb-1">Get 50% extra data on your next recharge. Limited time offer!</p>
+                            <small class="text-primary">Tap to view</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Data Usage Alert</h6>
+                                <small class="text-muted">2 weeks ago</small>
+                            </div>
+                            <p class="mb-1">You've used 80% of your daily data limit.</p>
+                            <small class="text-primary">Tap to check usage</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Mark All as Read</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer mt-5 py-4" style="background: #222C25; color: #EAE7DC;">
+        <div class="container">
+            <div class="row">
+             
+                <div class="col-md-4 mb-4">
+                    <img src="/Users/img/212268702.png" height="45">
+                    <h3>Volt Mobi</h3>
+                    <p>Your trusted prepaid recharge service for fast, secure, and affordable mobile top-ups.</p>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-light">Home</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Plans</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Recharge</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Support</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+
+                    <h3>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt"></i> 123 Volt Street, Tech City, India</li>
+                        <li><i class="bi bi-telephone"></i> +91 123 456 7890</li>
+                        <li><i class="bi bi-envelope"></i> support@voltmobi.com</li>
+                    </ul>
+                    <div class="mt-3">
+                        <h5>Follow Us</h5>
+                        <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-light me-2"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 VoltMobi. All rights reserved.</p>
+                <p class="mb-0"><a href="#" class="text-light text-decoration-none">Privacy Policy</a> | <a href="#" class="text-light text-decoration-none">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+   <script src="/Users/js/dashboard.js"></script>
+    
+        </body>
+        </html> 
