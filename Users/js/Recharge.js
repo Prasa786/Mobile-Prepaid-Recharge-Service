@@ -2,19 +2,22 @@
 const apiBaseUrl = "http://localhost:8083/api";
 
 // Fetch Recharge Plans from Backend
-async function fetchRechargePlans(search = "", categoryId = "all") {
-    let url = `${apiBaseUrl}/recharge-plans`;
+async function fetchRechargePlans(search = "", categoryId = "all", minPrice = null, maxPrice = null, minValidity = null, maxValidity = null) {
+    let url = `${apiBaseUrl}/recharge-plans/search`;
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (categoryId !== "all") params.append("categoryId", categoryId);
+    if (minPrice !== null) params.append("minPrice", minPrice);
+    if (maxPrice !== null) params.append("maxPrice", maxPrice);
+    if (minValidity !== null) params.append("minValidity", minValidity);
+    if (maxValidity !== null) params.append("maxValidity", maxValidity);
     if (params.toString()) url += `?${params.toString()}`;
+    else url = `${apiBaseUrl}/recharge-plans`; // Fallback to all plans
 
     try {
         const response = await fetch(url, {
             method: "GET",
             headers: {
-                // Uncomment if token is required for users
-                // "Authorization": "Bearer " + localStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
         });
@@ -27,48 +30,88 @@ async function fetchRechargePlans(search = "", categoryId = "all") {
         displayRechargePlans(plans);
     } catch (error) {
         console.error("Error fetching plans:", error);
-        document.getElementById("plansContainer").innerHTML = "<p class='text-danger'>Error loading plans. Please try again later.</p>";
+        const container = document.getElementById("plansContainer");
+        if (container) {
+            container.innerHTML = "<p class='text-danger'>Error loading plans. Please try again later.</p>";
+        }
     }
 }
 
-// Fetch Categories for Filter Dropdown
+// Fetch Categories for Sidebar
 async function fetchCategories() {
     try {
         const response = await fetch(`${apiBaseUrl}/categories`, {
             method: "GET",
             headers: {
-                // "Authorization": "Bearer " + localStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch categories");
+            throw new Error(`Failed to fetch categories: ${response.status}`);
         }
 
         const categories = await response.json();
-        populateCategoryFilter(categories);
+        populateCategoryList(categories);
     } catch (error) {
         console.error("Error fetching categories:", error);
-        document.getElementById("filterType").innerHTML = "<option value='all'>All Categories</option>";
+        const categoryList = document.getElementById("categoryList");
+        if (categoryList) {
+            categoryList.innerHTML = "<li><a href='#' onclick=\"filterByCategory('all')\">All Categories</a></li>";
+        }
     }
 }
 
-// Populate Category Filter Dropdown
-function populateCategoryFilter(categories) {
-    const filter = document.getElementById("filterType");
-    filter.innerHTML = "<option value='all'>All Categories</option>";
+// Populate Category List in Sidebar
+function populateCategoryList(categories) {
+    const categoryList = document.getElementById("categoryList");
+    if (!categoryList) return;
+    categoryList.innerHTML = "<li><a href='#' onclick=\"filterByCategory('all')\">All Categories</a></li>";
     categories.forEach(category => {
-        const option = document.createElement("option");
-        option.value = category.categoryId;
-        option.textContent = category.categoryName;
-        filter.appendChild(option);
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="#" onclick="filterByCategory(${category.categoryId})">${category.categoryName}</a>`;
+        categoryList.appendChild(li);
     });
+}
+
+// Filter Plans by Category
+function filterByCategory(categoryId) {
+    const search = document.getElementById("searchName").value.trim();
+    const minPrice = document.getElementById("minPrice").value || null;
+    const maxPrice = document.getElementById("maxPrice").value || null;
+    const minValidity = document.getElementById("minValidity").value || null;
+    const maxValidity = document.getElementById("maxValidity").value || null;
+    fetchRechargePlans(search, categoryId, minPrice, maxPrice, minValidity, maxValidity);
+}
+
+// Apply Filters from Inputs
+function applyFilters() {
+    const search = document.getElementById("searchName").value.trim();
+    const categoryId = "all"; // Default to all unless category is clicked
+    const minPrice = document.getElementById("minPrice").value || null;
+    const maxPrice = document.getElementById("maxPrice").value || null;
+    const minValidity = document.getElementById("minValidity").value || null;
+    const maxValidity = document.getElementById("maxValidity").value || null;
+    fetchRechargePlans(search, categoryId, minPrice, maxPrice, minValidity, maxValidity);
+}
+
+// Reset Filters
+function resetFilters() {
+    document.getElementById("searchName").value = "";
+    document.getElementById("minPrice").value = "";
+    document.getElementById("maxPrice").value = "";
+    document.getElementById("minValidity").value = "";
+    document.getElementById("maxValidity").value = "";
+    fetchRechargePlans(); // Fetch all plans with no filters
 }
 
 // Display Plans in UI
 function displayRechargePlans(plans) {
     const container = document.getElementById("plansContainer");
+    if (!container) {
+        console.error("plansContainer element not found in DOM");
+        return;
+    }
     container.innerHTML = ""; // Clear previous data
 
     if (!plans || plans.length === 0) {
@@ -82,14 +125,14 @@ function displayRechargePlans(plans) {
         div.innerHTML = `
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">${plan.name}</h5>
+                    <h5 class="card-title">${plan.name}</h5>
                     <p class="card-text"><strong>Price:</strong> ₹${plan.price}</p>
                     <p class="card-text"><strong>Validity:</strong> ${plan.validity}</p>
                     <p class="card-text"><strong>Data:</strong> ${plan.dataLimit || "N/A"}</p>
                     <p class="card-text"><strong>Benefits:</strong> ${plan.benefits || plan.description || "N/A"}</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <button class="btn btn-outline-primary me-2" onclick="viewDetails(${plan.planId})">View Details</button>
+                    <button class="btn btn-primary me-2" onclick="viewDetails(${plan.planId})">View Details</button>
                     <button class="btn btn-success" onclick="buyNow(${plan.planId})">Buy Now</button>
                 </div>
             </div>
@@ -98,32 +141,18 @@ function displayRechargePlans(plans) {
     });
 }
 
-// Filter and Search Plans
-document.getElementById("searchPlans")?.addEventListener("input", (e) => {
-    const search = e.target.value.trim();
-    const categoryId = document.getElementById("filterType").value;
-    fetchRechargePlans(search, categoryId);
-});
-
-document.getElementById("filterType")?.addEventListener("change", (e) => {
-    const search = document.getElementById("searchPlans").value.trim();
-    const categoryId = e.target.value;
-    fetchRechargePlans(search, categoryId);
-});
-
 // Fetch and Show Plan Details in Modal
 async function viewDetails(planId) {
     try {
         const response = await fetch(`${apiBaseUrl}/recharge-plans/${planId}`, {
             method: "GET",
             headers: {
-                // "Authorization": "Bearer " + localStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch plan details");
+            throw new Error(`Failed to fetch plan details: ${response.status}`);
         }
 
         const plan = await response.json();
@@ -132,8 +161,14 @@ async function viewDetails(planId) {
         document.getElementById("modalPlanValidity").textContent = `Validity: ${plan.validity}`;
         document.getElementById("modalPlanData").textContent = `Data: ${plan.dataLimit || "N/A"}`;
         document.getElementById("modalPlanDetails").textContent = `Benefits: ${plan.benefits || plan.description || "N/A"}`;
+        localStorage.setItem("selectedPlanId", plan.planId);
 
-        const modal = new bootstrap.Modal(document.getElementById("planModal"));
+        const modalElement = document.getElementById("planModal");
+        if (!modalElement) {
+            console.error("planModal element not found in DOM");
+            return;
+        }
+        const modal = new bootstrap.Modal(modalElement);
         modal.show();
     } catch (error) {
         console.error("Error fetching plan details:", error);
@@ -151,12 +186,13 @@ function buyNow(planId) {
     }
 
     localStorage.setItem("selectedPlanId", planId);
-    window.location.href = "payment.html";
+    window.location.href = "/Users/html/payment.html";
 }
 
-// Scroll to Top Functionality
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+// Buy Now from Modal
+function buyNowFromModal() {
+    const planId = localStorage.getItem("selectedPlanId");
+    if (planId) buyNow(planId);
 }
 
 // Function to Update Phone Number
@@ -184,25 +220,27 @@ function checkUserPhoneNumber() {
     const mobileNumber = localStorage.getItem("mobileNumber");
     const userPhoneElement = document.getElementById("userPhone");
 
+    if (!userPhoneElement) {
+        console.error("userPhone element not found in DOM");
+        return;
+    }
+
     if (!mobileNumber || mobileNumber === "null" || mobileNumber === "") {
         const newNumber = prompt("Please enter your 10-digit phone number to proceed with the recharge:");
         if (newNumber && /^\d{10}$/.test(newNumber)) {
             localStorage.setItem("mobileNumber", newNumber);
             userPhoneElement.textContent = newNumber;
-            return true;
         } else {
             alert("Please enter a valid 10-digit mobile number.");
-            return false;
         }
     } else {
         userPhoneElement.textContent = mobileNumber;
-        return true;
     }
 }
 
 // Initialize Page
 document.addEventListener("DOMContentLoaded", () => {
     checkUserPhoneNumber();
-    fetchRechargePlans();
+    fetchRechargePlans(); // Load all plans initially
     fetchCategories();
 });

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" href="/Users/img/212268702.png" type="image/icon">
     <link rel="stylesheet" href="/Users/css/payment.css" type="text/css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
@@ -97,14 +98,14 @@
                 <div class="main-content">
                     <div id="paymentOptions" class="mt-4"></div>
                     
-                    <div id="paymentLoader" class="payment-loader">
+                    <div id="paymentLoader" class="payment-loader" style="display: none;">
                         <div class="loader-spinner"></div>
                         <p>Processing your payment...</p>
                     </div>
 
                     <form id="payment-form">
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg" id="payButton" disabled>Pay Securely</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="payButton" disabled>Pay Securely</button>
                             <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                         </div>
                     </form>
@@ -156,69 +157,69 @@
                 <div class="main-content">
                     <div class="plan-summary mb-4">
                         <h4 class="text-center mb-4">Plan Summary</h4>
-                        <p id="summaryPlanName"></p>
-                        <p id="summaryPrice"></p>
-                        <p id="summaryData"></p>
-                        <p id="summarySms"></p>
-                        <p id="summaryCalls"></p>
+                        <p><strong>Plan:</strong> <span id="summaryPlanName">Loading...</span></p>
+                        <p><strong>Price:</strong> ₹<span id="summaryPrice">Loading...</span></p>
+                        <p><strong>Data:</strong> <span id="summaryData">Loading...</span></p>
+                        <p><strong>SMS:</strong> <span id="summarySms">Loading...</span></p>
+                        <p><strong>Calls:</strong> <span id="summaryCalls">Loading...</span></p>
                     </div>
 
                     <div class="payment-summary mb-4">
                         <h4 class="text-center mb-4">Payment Summary</h4>
-                        <p id="amountLabel"></p>
-                        <p id="gstlabel"></p>
+                        <p><strong>Amount:</strong> ₹<span id="amountLabel">Loading...</span></p>
+                        <p><strong>GST (18%):</strong> ₹<span id="gstlabel">Loading...</span></p>
                         <div class="tooltip-content">
-                            <p id="convenienceLabel">Convenience Fee: ₹0.00 <i class="fas fa-info-circle"></i></p>
+                            <p><strong>Convenience Fee:</strong> ₹<span id="convenienceLabel">0.00</span> <i class="fas fa-info-circle"></i></p>
                             <span class="tooltip-text">No convenience fee for UPI payments. Other methods may have a small fee.</span>
                         </div>
                         <hr style="border: #617A55 1px solid;">
-                        <p id="totalLabel" style="font-weight: bold; font-size: 1.1em;"></p>
+                        <p><strong>Total:</strong> ₹<span id="totalLabel" style="font-weight: bold; font-size: 1.1em;">Loading...</span></p>
                         <div id="emiOption" style="display: none; margin-top: 10px;">
                             <p><i class="fas fa-credit-card"></i> EMI Available for orders above ₹500</p>
                         </div>
-                        <hr style="border: #617A55 1px solid;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-check-circle text-success"></i> Payment Successful!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="paymentSuccessModalLabel">Payment Successful</h5>
                 </div>
-                <div class="modal-body text-center">
-                    <i class="fas fa-check-circle text-success" style="font-size: 64px;"></i>
-                    <h4 class="mt-3">Thank You for Your Payment</h4>
-                    <p>Your payment has been processed successfully.</p>
-                    
-                    <div class="transaction-details text-left mt-4">
-                        <h5>Transaction Details</h5>
-                        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
-                        <p><strong>Mobile Number:</strong> <span id="transactionMobile"></span></p>
-                        <p><strong>Date:</strong> <span id="transactionDate"></span></p>
-                        <p><strong>Time:</strong> <span id="transactionTime"></span></p>
-                        <p><strong>Payment Method:</strong> <span id="transactionPaymentMethod"></span></p>
-                        <p><strong>Amount:</strong> <span id="transactionAmount"></span></p>
-                        <p><strong>Reward:</strong> <span id="transactionGift"></span></p>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> A confirmation has been sent to your registered email and mobile number.
-                        </div>
+                <div class="modal-body">
+                    <div class="alert alert-success">
+                        <h4>Thank You for Your Payment</h4>
+                        <p>Your payment has been processed successfully.</p>
                     </div>
                     
-                    <div class="countdown mt-3">
-                        <p>Redirecting to dashboard in <span id="countdown">10</span> seconds</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-                        </div>
+                    <h5>Transaction Details</h5>
+                    <div class="mb-3">
+                        <div><strong>Transaction ID:</strong> <span id="transactionId"></span></div>
+                        <div><strong>Mobile Number:</strong> <span id="transactionMobile"></span></div>
+                        <div><strong>Date:</strong> <span id="transactionDate"></span></div>
+                        <div><strong>Time:</strong> <span id="transactionTime"></span></div>
+                        <div><strong>Payment Method:</strong> <span id="transactionPaymentMethod"></span></div>
+                        <div><strong>Amount:</strong> <span id="transactionAmount"></span></div>
+                        <div><strong>Reward:</strong> <span id="transactionGift"></span></div>
                     </div>
+                    
+                    <h5>Plan Details</h5>
+                    <div class="mb-3">
+                        <div><strong>Plan Name:</strong> <span id="transactionPlanName"></span></div>
+                        <div><strong>Details:</strong> <span id="transactionPlanDetails"></span></div>
+                    </div>
+                    
+                    <div class="progress mt-3">
+                        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-muted">Redirecting to dashboard in <span id="countdown">10</span> seconds...</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="redirectToRecharge()">New Recharge</button>
-                    <button type="button" class="btn btn-primary" onclick="redirectToDashboard()">Go to Dashboard</button>
+                    <button type="button" class="btn btn-secondary" onclick="redirectToDashboard()">Go Now</button>
                 </div>
             </div>
         </div>
