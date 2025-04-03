@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltmobi Telecom Services</title>
+    <link rel="icon" href="/Users/img/212268702.png" type="image/png">
+    <link rel="stylesheet" href="/Users/css/login.css" type="text/css">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<main>
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="/Users/img/212268702.png" alt="VoltMobi Logo" height="50" class="me-2">
+                <span class="fw-bold text-white d-none d-md-inline">VoltMobi</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/Users/index.html">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" data-bs-toggle="dropdown">Help</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Users/html/faq.html">FAQs</a></li>
+                            <li><a class="dropdown-item" href="/Users/html/contact.html">Contact Support</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</main>
+
+<!-- Login Form -->
+<div class="log1">
+<div class="login-container">
+    <h3>Login with Phone</h3>
+    <form id="loginForm">
+        <div class="mb-3">
+            <div class="phone-prefix">
+                <span>+91</span>
+                <input type="text" id="phoneNumber" class="form-control phone-input"
+                       placeholder="Enter 10-digit phone number" maxlength="13">
+                      
+            </div>
+            <small id="error-msg" class="text-danger"></small>
+            <button type="submit" id="sendOtpButton" class="btn-outline-custom">Send OTP</button>
+        </div>
+    </form>
+</div>
+
+<!-- OTP Modal -->
+<div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enter OTP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>We have sent an OTP to your phone number <span id="displayPhoneNumber"></span></p>
+                <div class="otp-container">
+                    <input type="text" name="otp[]" id="otp1" class="otp-input otp-field" maxlength="1">
+                    <input type="text" name="otp[]" id="otp2" class="otp-input otp-field" maxlength="1">
+                    <input type="text" name="otp[]" id="otp3" class="otp-input otp-field" maxlength="1">
+                    <input type="text" name="otp[]" id="otp4" class="otp-input otp-field" maxlength="1">
+                    <input type="text" name="otp[]" id="otp5" class="otp-input otp-field" maxlength="1">
+                    <input type="text" name="otp[]" id="otp6" class="otp-input otp-field" maxlength="1">
+                </div>
+                <small id="otpErrorMessage" style="color: red;">Please enter a valid 6-digit OTP.</small>
+                <div class="timer-text">OTP expires in <span id="timer">60</span> seconds</div>
+                <button class="resend-btn" id="resendOtp" disabled>Resend OTP</button>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn" id="verifyOtpButton">Verify OTP</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/Users/js/login.js"></script>
+</body>
+</html>

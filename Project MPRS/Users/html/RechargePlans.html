@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recharge Plans - VoltMobi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Users/css/recharge.css" type="text/css">
+    <link rel="icon" href="/Users/img/212268702.png" type="image/png">
+    <style>
+        .btn-primary {
+            background-color: #B68D40;
+            border-color: #B68D40;
+            color: #0C1D13;
+        }
+        .btn-primary:hover {
+            background-color: #9F7A34;
+            border-color: #9F7A34;
+            color: #EAE7DC;
+        }
+        .btn-success {
+            background-color: #617A55;
+            border-color: #617A55;
+            color: #0C1D13;
+        }
+        .btn-success:hover {
+            background-color: #4F6345;
+            border-color: #4F6345;
+            color: #EAE7DC;
+        }
+        .btn-warning {
+            background-color: #617A55;
+            border-color: #617A55;
+            color: #0C1D13;
+        }
+        .btn-warning:hover {
+            background-color: #4F6345;
+            border-color: #4F6345;
+            color: #EAE7DC;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/Users/index.html">
+                <img src="/Users/img/212268702.png" alt="VoltMobi Logo" class="me-2">
+                <span class="fw-bold d-none d-md-inline">VoltMobi</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/Users/index.html">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="plansDropdown" data-bs-toggle="dropdown">Plans</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Users/html/RechargePlans.html">Recommended Packs</a></li>
+                            <li><a class="dropdown-item" href="/Users/html/RechargePlans.html">Data Plans</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" data-bs-toggle="dropdown">Help</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Users/html/faq.html">FAQs</a></li>
+                            <li><a class="dropdown-item" href="/Users/html/contact.html">Contact Support</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center ms-auto">
+                    <img src="/Users/img/user_profile.png" alt="Profile" height="45px">
+                    <span class="me-3 fw-bold" style="color: #EAE7DC;">User: <span id="userPhone">Loading...</span></span>
+                    <button class="btn btn-outline-light btn-sm" onclick="updatePhoneNumber()">Update</button>
+                    <a class="btn btn-outline-danger ms-3" href="#" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <h3>Filter Plans</h3>
+                <input type="text" id="searchName" placeholder="Search by name..." class="form-control mb-3">
+                <input type="number" id="minPrice" placeholder="Min Price" class="form-control mb-3" step="0.01">
+                <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mb-3" step="0.01">
+                <input type="number" id="minValidity" placeholder="Min Validity (days)" class="form-control mb-3">
+                <input type="number" id="maxValidity" placeholder="Max Validity (days)" class="form-control mb-3">
+                <button class="btn btn-success w-100 mb-3" onclick="applyFilters()">Apply Filters</button>
+                <button class="btn btn-warning w-100 mb-3" onclick="resetFilters()">Reset Filters</button>
+                <h3>Categories</h3>
+                <ul class="list-unstyled" id="categoryList">
+                    <li><a href="#" onclick="filterByCategory('all')">All Categories</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9 main-content">
+                <div id="plansContainer" class="row"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center py-3 mt-4">
+        <div class="container">
+            <p>© 2025 Volt Mobi. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="planModalLabel">Recharge Plan Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalPlanName"></p>
+                    <p id="modalPlanPrice"></p>
+                    <p id="modalPlanValidity"></p>
+                    <p id="modalPlanData"></p>
+                    <p id="modalPlanDetails"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="buyNowFromModal()">Recharge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Users/js/Recharge.js"></script>
+</body>
+</html>
