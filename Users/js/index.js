@@ -34,7 +34,7 @@
                     localStorage.setItem("mobileNumber", mobileNumber);
 
                     console.log("Redirecting to payment.html");
-                    window.location.href = "payment.html";
+                    window.location.href = "/Users/html/payment.html";
                 }
 
                 document.getElementById('submitPhoneNumber').addEventListener('click', function () {
@@ -74,7 +74,7 @@
                     if (phoneNumber.length === 10 && !isNaN(phoneNumber)) {
                         errorMessage.style.display = 'none';
                         localStorage.setItem('mobileNumber', phoneNumber);
-                        window.location.href = "RechargePlans.html";
+                        window.location.href = "/Users/html/RechargePlans.html";
                     } else {
                         errorMessage.style.display = 'block';
                     }
@@ -238,7 +238,7 @@
                }
            
                // Add validation to plan links
-               document.querySelectorAll('a[href="RechargePlans.html"]').forEach(link => {
+               document.querySelectorAll('a[href="/Users/html/RechargePlans.html"]').forEach(link => {
                    link.addEventListener('click', function(e) {
                        const phoneNumber = document.getElementById('phoneNumber').value;
                        const validation = validateMobileNumber(phoneNumber);
@@ -253,7 +253,102 @@
                        }
                    });
                });
+
+
+               // Add this function to check KYC status
+async function checkKYCStatus(userId) {
+    try {
+        const response = await fetch(`/api/kyc/status/${userId}`);
+        if (response.ok) {
+            const status = await response.json();
+            return status;
+        }
+        return null;
+    } catch (error) {
+        console.error("Error checking KYC status:", error);
+        return null;
+    }
+}
            
+
+async function selectPlan(name, price, validity) {
+    console.log("selectPlan called with:", name, price, validity);
+    
+    // Get user ID from localStorage or wherever you store it
+    const userId = localStorage.getItem('userId');
+    
+    // Check KYC status
+    const kycStatus = await checkKYCStatus(userId);
+    
+    if (kycStatus !== 'VERIFIED') {
+        // Show KYC modal or redirect to KYC page
+        showKYCModal();
+        return;
+    }
+    
+    // Rest of your existing selectPlan logic
+    selectedPlan = { name, price, validity };
+    let mobileNumber = localStorage.getItem('mobileNumber');
+    console.log("Current mobileNumber:", mobileNumber);
+
+    if (!mobileNumber || mobileNumber === 'null' || mobileNumber === '') {
+        console.log("Showing modal");
+        const modal = new bootstrap.Modal(document.getElementById('phoneNumberModal'));
+        modal.show();
+    } else {
+        proceedToPayment(mobileNumber);
+    }
+}
+
+function showKYCModal() {
+    // Create or show a modal for KYC submission
+    const kycModal = `
+        <div class="modal fade" id="kycModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">KYC Verification Required</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>To purchase plans, please complete your KYC verification.</p>
+                        <form id="kycForm">
+                            <div class="mb-3">
+                                <label class="form-label">Aadhaar Number</label>
+                                <input type="text" class="form-control" name="aadhaar" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">PAN Number</label>
+                                <input type="text" class="form-control" name="pan" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Document (Front)</label>
+                                <input type="file" class="form-control" name="documentFront" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Document (Back)</label>
+                                <input type="file" class="form-control" name="documentBack">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitKYC()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to DOM if not already there
+    if (!document.getElementById('kycModal')) {
+        document.body.insertAdjacentHTML('beforeend', kycModal);
+    }
+    
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('kycModal'));
+    modal.show();
+}
                // Add validation to login via mobile
             //    document.querySelectorAll('a[href="login.html"]').forEach(link => {
             //        link.addEventListener('click', function(e) {
@@ -274,3 +369,34 @@
             //    });
            });
                    
+
+           async function submitKYC() {
+            const form = document.getElementById('kycForm');
+            const formData = new FormData(form);
+            
+            // Get user ID from localStorage
+            const userId = localStorage.getItem('userId');
+            
+            // Add user ID to form data
+            formData.append('userId', userId);
+            
+            try {
+                const response = await fetch('/api/kyc/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    alert('KYC submitted successfully! Please wait for admin approval.');
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('kycModal'));
+                    modal.hide();
+                } else {
+                    const error = await response.json();
+                    alert(`Error submitting KYC: ${error.message}`);
+                }
+            } catch (error) {
+                console.error("Error submitting KYC:", error);
+                alert('Failed to submit KYC. Please try again.');
+            }
+        }

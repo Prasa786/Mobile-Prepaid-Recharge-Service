@@ -621,26 +621,79 @@ async function loadUserUsage() {
 }
 
 async function loadAnalytics() {
-    const [transactions, categories, users] = await Promise.all([
-        secureFetch(`${API_BASE_URL}/transactions`),
-        secureFetch(`${API_BASE_URL}/categories`),
-        secureFetch(`${API_BASE_URL}/users`)
-    ]);
+    try {
+        showLoading('analytics');
+        
+        // Fetch all necessary data in parallel
+        const [categoriesResponse, plansResponse, transactionsResponse, usersResponse] = await Promise.all([
+            secureFetch(`${API_BASE_URL}/categories/analytics/stats`),
+            secureFetch(`${API_BASE_URL}/recharge-plans/analytics/stats`),
+            secureFetch(`${API_BASE_URL}/transactions`),
+            secureFetch(`${API_BASE_URL}/users`)
+        ]);
 
-    renderCategoryDistributionChart(categories);
-    renderTransactionStatusChart(transactions);
-    renderUserGrowthChart(users);
+        // Process responses safely
+        const categories = categoriesResponse || {};
+        const plans = plansResponse || {};
+        const transactions = transactionsResponse || [];
+        const users = usersResponse || [];
 
-    const totalRevenue = transactions
-        .filter(t => t.status === 'SUCCESS')
-        .reduce((sum, t) => sum + t.amount, 0);
-    document.getElementById('total-revenue').textContent = `₹${totalRevenue.toFixed(2)}`;
-    document.getElementById('total-users').textContent = users.length;
-    const activeCategories = categories.filter(c => c.active).length;
-    document.getElementById('active-categories').textContent = `${activeCategories}/${categories.length}`;
-    const successCount = transactions.filter(t => t.status === 'SUCCESS').length;
-    const successRate = transactions.length > 0 ? (successCount / transactions.length * 100) : 0;
-    document.getElementById('success-rate').textContent = `${successRate.toFixed(1)}%`;
+        // Calculate summary values with fallbacks
+        const totalRevenue = plans.totalRevenue ? parseFloat(plans.totalRevenue) : 0;
+        const monthlyRevenue = plans.monthlyRevenue ? parseFloat(plans.monthlyRevenue) : 0;
+        const activePlans = plans.activePlans || 0;
+        const totalPlans = plans.totalPlans || 0;
+
+        // Update summary cards safely
+        document.getElementById('total-revenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+        document.getElementById('monthly-revenue').textContent = `₹${monthlyRevenue.toFixed(2)}`;
+        document.getElementById('total-users').textContent = users.length;
+        document.getElementById('active-plans').textContent = `${activePlans}/${totalPlans}`;
+
+        // Render charts with proper data validation
+        if (categories.planCountByCategory) {
+            renderCategoryDistributionChart(categories);
+        } else {
+            console.warn('No category distribution data available');
+        }
+
+        if (plans.popularPlans) {
+            renderPlanPopularityChart(plans.popularPlans);
+        } else {
+            console.warn('No popular plans data available');
+        }
+
+        if (plans.revenueTrend) {
+            renderRevenueTrendChart(plans.revenueTrend);
+        } else {
+            console.warn('No revenue trend data available');
+        }
+
+        if (transactions.length > 0) {
+            renderTransactionStatusChart(transactions);
+        } else {
+            console.warn('No transactions data available');
+        }
+
+        if (users.length > 0) {
+            renderUserGrowthChart(users);
+        } else {
+            console.warn('No users data available');
+        }
+
+    } catch (error) {
+        console.error("Error loading analytics:", error);
+        showToast(`Failed to load analytics: ${error.message}`, 'error');
+        
+        // Set default values when error occurs
+        document.getElementById('total-revenue').textContent = '₹0.00';
+        document.getElementById('monthly-revenue').textContent = '₹0.00';
+        document.getElementById('total-users').textContent = '0';
+        document.getElementById('active-plans').textContent = '0/0';
+        
+    } finally {
+        hideLoading('analytics');
+    }
 }
 
 function renderCategoryDistributionChart(categories) {
@@ -932,6 +985,244 @@ loadRechargePlans();
 showToast(`Failed to update plan status: ${error.message}`, 'error');
 }
 }
+
+async function loadAnalytics() {
+    try {
+        // Fetch all necessary data in parallel
+        const [categories, plans, transactions, users] = await Promise.all([
+            secureFetch(`${API_BASE_URL}/categories/analytics/stats`),
+            secureFetch(`${API_BASE_URL}/recharge-plans/analytics/stats`),
+            secureFetch(`${API_BASE_URL}/transactions`),
+            secureFetch(`${API_BASE_URL}/users`)
+        ]);
+
+        // Update summary cards
+        document.getElementById('total-revenue').textContent = `₹${plans.totalRevenue.toFixed(2)}`;
+        document.getElementById('monthly-revenue').textContent = `₹${plans.monthlyRevenue.toFixed(2)}`;
+        document.getElementById('total-users').textContent = users.length;
+        document.getElementById('active-plans').textContent = `${plans.activePlans}/${plans.totalPlans}`;
+
+        // Render charts
+        renderCategoryDistributionChart(categories);
+        renderPlanPopularityChart(plans.popularPlans);
+        renderRevenueTrendChart(plans.revenueTrend);
+        renderTransactionStatusChart(transactions);
+        renderUserGrowthChart(users);
+    } catch (error) {
+        console.error("Error loading analytics:", error);
+        showToast(`Failed to load analytics: ${error.message}`, 'error');
+    }
+}
+
+function renderCategoryDistributionChart(categories) {
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    if (window.categoryChart) window.categoryChart.destroy();
+    
+    const labels = Object.keys(categories.planCountByCategory);
+    const data = Object.values(categories.planCountByCategory);
+    
+    window.categoryChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                    '#9966FF', '#FF9F40', '#8AC24A', '#607D8B'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Plans by Category'
+                }
+            }
+        }
+    });
+}
+
+function renderPlanPopularityChart(popularPlans) {
+    const ctx = document.getElementById('planPopularityChart').getContext('2d');
+    if (window.planPopularityChart) window.planPopularityChart.destroy();
+    
+    const labels = popularPlans.map(plan => plan.name);
+    const data = popularPlans.map(plan => plan.purchaseCount);
+    
+    window.planPopularityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Purchases',
+                data: data,
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Most Popular Plans'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function renderRevenueTrendChart(revenueTrend) {
+    const ctx = document.getElementById('revenueTrendChart').getContext('2d');
+    if (window.revenueTrendChart) window.revenueTrendChart.destroy();
+    
+    const labels = revenueTrend.map(item => item.date);
+    const data = revenueTrend.map(item => item.revenue);
+    
+    window.revenueTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Revenue (₹)',
+                data: data,
+                borderColor: '#4BC0C0',
+                fill: true,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Revenue Trend'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function renderTransactionStatusChart(transactions) {
+    const ctx = document.getElementById('transactionStatusChart').getContext('2d');
+    if (window.transactionStatusChart) window.transactionStatusChart.destroy();
+    
+    const successCount = transactions.filter(t => t.status === 'SUCCESS').length;
+    const failedCount = transactions.filter(t => t.status === 'FAILED').length;
+    const pendingCount = transactions.filter(t => t.status === 'PENDING').length;
+    
+    window.transactionStatusChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Success', 'Failed', 'Pending'],
+            datasets: [{
+                data: [successCount, failedCount, pendingCount],
+                backgroundColor: [
+                    '#28a745', '#dc3545', '#ffc107'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Transaction Status'
+                }
+            }
+        }
+    });
+}
+
+function applyDateFilter() {
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    
+    if (!startDate || !endDate) {
+        showToast('Please select both start and end dates', 'error');
+        return;
+    }
+    
+    loadAnalyticsWithDateRange(startDate, endDate);
+}
+
+async function loadAnalyticsWithDateRange(startDate, endDate) {
+    try {
+        const [categories, plans] = await Promise.all([
+            secureFetch(`${API_BASE_URL}/categories/analytics/revenue-trend?startDate=${startDate}&endDate=${endDate}`),
+            secureFetch(`${API_BASE_URL}/recharge-plans/analytics/revenue-trend?startDate=${startDate}&endDate=${endDate}`)
+        ]);
+        
+        renderRevenueTrendChart(plans);
+        // Update other charts as needed
+    } catch (error) {
+        console.error("Error loading filtered analytics:", error);
+        showToast(`Failed to load filtered analytics: ${error.message}`, 'error');
+    }
+}
+
+function resetDateFilter() {
+    document.getElementById('start-date').value = '';
+    document.getElementById('end-date').value = '';
+    loadAnalytics();
+}
+
+async function downloadReport(format) {
+    try {
+        const startDate = document.getElementById('start-date').value || '';
+        const endDate = document.getElementById('end-date').value || '';
+        
+        let url = `${API_BASE_URL}/analytics/report?format=${format}`;
+        if (startDate && endDate) {
+            url += `&startDate=${startDate}&endDate=${endDate}`;
+        }
+        
+        // For PDF download
+        if (format === 'pdf') {
+            const token = localStorage.getItem('adminToken');
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to generate report');
+            }
+            
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `analytics-report-${new Date().toISOString().split('T')[0]}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+            a.remove();
+            
+            showToast('PDF report downloaded successfully');
+        } else {
+            // For CSV download
+            window.open(url, '_blank');
+        }
+    } catch (error) {
+        console.error("Error downloading report:", error);
+        showToast(`Failed to download report: ${error.message}`, 'error');
+    }
+}
+
 window.showEmailModal = showEmailModal;
 window.sendEmail = sendEmail;
 window.loadTabData = loadTabData;
@@ -952,3 +1243,8 @@ window.closeModal = closeModal;
 window.logout = logout;
 window.filterTransactions = filterTransactions;
 window.viewPaymentDetails = viewPaymentDetails;
+
+// Add these to the window object at the bottom of the file
+window.applyDateFilter = applyDateFilter;
+window.resetDateFilter = resetDateFilter;
+window.downloadReport = downloadReport;
