@@ -70,9 +70,9 @@
                 </ul>
                 <div class="d-flex align-items-center ms-auto">
                     <img src="/Users/img/user_profile.png" alt="Profile" height="45px">
-                    <span class="me-3 fw-bold" style="color: #EAE7DC;">User: <span id="userPhone">Loading...</span></span>
-                    <button class="btn btn-outline-light btn-sm" onclick="updatePhoneNumber()">Update</button>
-                    <a class="btn btn-outline-danger ms-3" href="#" onclick="logout()">Logout</a>
+                    <span class="me-3 fw-bold" style="color: #EAE7DC;">User: <span id="userPhone">Guest User</span></span>
+                    <button class="btn btn-outline-light btn-sm" id="updatePhoneBtn" style="display: none;" onclick="updatePhoneNumber()">Update</button>
+                    <a class="btn btn-outline-danger ms-3" id="logoutBtn" style="display: none;" href="#" onclick="logout()">Logout</a>
                 </div>
             </div>
         </div>
@@ -106,6 +106,7 @@
         </div>
     </footer>
 
+    <!-- Plan Details Modal -->
     <div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -123,6 +124,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="buyNowFromModal()">Recharge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phone Number Modal -->
+    <div class="modal fade" id ="phoneNumberModal" tabindex="-1" aria-labelledby="phoneNumberModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="phoneNumberModalLabel">Enter Phone Number</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Please enter your 10-digit phone number to proceed with the recharge:</p>
+                    <input type="text" class="form-control" id="phoneNumberInput" placeholder="Enter 10-digit number" maxlength="10">
+                    <small id="phoneError" class="text-danger" style="display: none;">Please enter a valid 10-digit number.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitPhoneNumber">Submit</button>
                 </div>
             </div>
         </div>

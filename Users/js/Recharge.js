@@ -12,7 +12,7 @@ async function fetchRechargePlans(search = "", categoryId = "all", minPrice = nu
     if (minValidity !== null) params.append("minValidity", minValidity);
     if (maxValidity !== null) params.append("maxValidity", maxValidity);
     if (params.toString()) url += `?${params.toString()}`;
-    else url = `${apiBaseUrl}/recharge-plans`; // Fallback to all plans
+    else url = `${apiBaseUrl}/recharge-plans`;
 
     try {
         const response = await fetch(url, {
@@ -87,7 +87,7 @@ function filterByCategory(categoryId) {
 // Apply Filters from Inputs
 function applyFilters() {
     const search = document.getElementById("searchName").value.trim();
-    const categoryId = "all"; // Default to all unless category is clicked
+    const categoryId = "all";
     const minPrice = document.getElementById("minPrice").value || null;
     const maxPrice = document.getElementById("maxPrice").value || null;
     const minValidity = document.getElementById("minValidity").value || null;
@@ -102,7 +102,7 @@ function resetFilters() {
     document.getElementById("maxPrice").value = "";
     document.getElementById("minValidity").value = "";
     document.getElementById("maxValidity").value = "";
-    fetchRechargePlans(); // Fetch all plans with no filters
+    fetchRechargePlans();
 }
 
 // Display Plans in UI
@@ -112,7 +112,7 @@ function displayRechargePlans(plans) {
         console.error("plansContainer element not found in DOM");
         return;
     }
-    container.innerHTML = ""; // Clear previous data
+    container.innerHTML = "";
 
     if (!plans || plans.length === 0) {
         container.innerHTML = "<p class='text-muted'>No plans available.</p>";
@@ -177,16 +177,26 @@ async function viewDetails(planId) {
 }
 
 // Function to Buy Plan
-function buyNow(planId) {
+async function buyNow(planId) {
     const mobileNumber = localStorage.getItem("mobileNumber");
 
     if (!mobileNumber || mobileNumber === "null" || mobileNumber === "") {
-        alert("Please enter a valid mobile number before proceeding.");
-        return;
+        localStorage.setItem("selectedPlanId", planId);
+        const modal = new bootstrap.Modal(document.getElementById("phoneNumberModal"));
+        modal.show();
+    } else {
+        // Verify if number exists in DB
+        const exists = await checkMobileExists(mobileNumber);
+        if (exists) {
+            localStorage.setItem("selectedPlanId", planId);
+            window.location.href = "/Users/html/payment.html";
+        } else {
+            localStorage.removeItem("mobileNumber");
+            alert("Phone number not registered. Please enter a valid number.");
+            const modal = new bootstrap.Modal(document.getElementById("phoneNumberModal"));
+            modal.show();
+        }
     }
-
-    localStorage.setItem("selectedPlanId", planId);
-    window.location.href = "/Users/html/payment.html";
 }
 
 // Buy Now from Modal
@@ -195,11 +205,77 @@ function buyNowFromModal() {
     if (planId) buyNow(planId);
 }
 
+// Handle Phone Number Submission
+async function handlePhoneSubmit() {
+    const phoneNumberInput = document.getElementById("phoneNumberInput").value;
+    const fullPhoneNumber = `+91${phoneNumberInput}`;
+    const phoneError = document.getElementById("phoneError");
+    const submitBtn = document.getElementById("submitPhoneNumber");
+
+    if (!/^\d{10}$/.test(phoneNumberInput)) {
+        phoneError.textContent = "Please enter a valid 10-digit number.";
+        phoneError.style.display = "block";
+        return;
+    }
+
+    if (/^[01]/.test(phoneNumberInput)) {
+        phoneError.textContent = "Mobile number cannot start with 0 or 1.";
+        phoneError.style.display = "block";
+        return;
+    }
+
+    try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Verifying...";
+
+        const exists = await checkMobileExists(fullPhoneNumber);
+        if (exists) {
+            localStorage.setItem("mobileNumber", fullPhoneNumber);
+            document.getElementById("userPhone").textContent = phoneNumberInput;
+            document.getElementById("updatePhoneBtn").style.display = "inline-block";
+            document.getElementById("logoutBtn").style.display = "inline-block";
+            const modal = bootstrap.Modal.getInstance(document.getElementById("phoneNumberModal"));
+            modal.hide();
+            const planId = localStorage.getItem("selectedPlanId");
+            if (planId) {
+                window.location.href = "/Users/html/payment.html";
+            }
+        } else {
+            phoneError.textContent = "Phone number not registered. Please register first.";
+            phoneError.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        phoneError.textContent = "Error verifying number. Please try again.";
+        phoneError.style.display = "block";
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+    }
+}
+
+// Check if mobile exists in DB
+async function checkMobileExists(mobileNumber) {
+    try {
+        const response = await fetch(`${apiBaseUrl}/users/check-mobile/${mobileNumber}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error checking mobile:", error);
+        return false;
+    }
+}
+
 // Function to Update Phone Number
 function updatePhoneNumber() {
     const newNumber = prompt("Enter new phone number:");
     if (newNumber && /^\d{10}$/.test(newNumber)) {
-        localStorage.setItem("mobileNumber", newNumber);
+        const fullNumber = `+91${newNumber}`;
+        localStorage.setItem("mobileNumber", fullNumber);
         document.getElementById("userPhone").textContent = newNumber;
     } else {
         alert("Please enter a valid 10-digit mobile number.");
@@ -211,36 +287,35 @@ function logout() {
     if (confirm("Are you sure you want to logout?")) {
         localStorage.removeItem("mobileNumber");
         localStorage.removeItem("selectedPlanId");
-        window.location.href = "/Users/index.html";
+        document.getElementById("userPhone").textContent = "Guest User";
+        document.getElementById("updatePhoneBtn").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none";
     }
 }
 
-// Check and Set User Phone Number
-function checkUserPhoneNumber() {
+// Check User Status on Page Load
+function checkUserStatus() {
     const mobileNumber = localStorage.getItem("mobileNumber");
-    const userPhoneElement = document.getElementById("userPhone");
-
-    if (!userPhoneElement) {
-        console.error("userPhone element not found in DOM");
-        return;
-    }
-
-    if (!mobileNumber || mobileNumber === "null" || mobileNumber === "") {
-        const newNumber = prompt("Please enter your 10-digit phone number to proceed with the recharge:");
-        if (newNumber && /^\d{10}$/.test(newNumber)) {
-            localStorage.setItem("mobileNumber", newNumber);
-            userPhoneElement.textContent = newNumber;
-        } else {
-            alert("Please enter a valid 10-digit mobile number.");
-        }
-    } else {
-        userPhoneElement.textContent = mobileNumber;
+    if (mobileNumber && mobileNumber !== "null" && mobileNumber !== "") {
+        checkMobileExists(mobileNumber).then(exists => {
+            if (exists) {
+                document.getElementById("userPhone").textContent = mobileNumber.slice(3); // Remove +91
+                document.getElementById("updatePhoneBtn").style.display = "inline-block";
+                document.getElementById("logoutBtn").style.display = "inline-block";
+            } else {
+                localStorage.removeItem("mobileNumber");
+                document.getElementById("userPhone").textContent = "Guest User";
+                document.getElementById("updatePhoneBtn").style.display = "none";
+                document.getElementById("logoutBtn").style.display = "none";
+            }
+        });
     }
 }
 
 // Initialize Page
 document.addEventListener("DOMContentLoaded", () => {
-    checkUserPhoneNumber();
-    fetchRechargePlans(); // Load all plans initially
+    checkUserStatus();
+    fetchRechargePlans();
     fetchCategories();
+    document.getElementById("submitPhoneNumber").addEventListener("click", handlePhoneSubmit);
 });

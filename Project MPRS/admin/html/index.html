@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Voltmobi</title>
-    <link rel="icon" href="/Project MPRS/admin/img/212268702.png" type="image/icon">
+    <title>Admin Dashboard - Voltmobi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/Project MPRS/admin/css/admin.css">
-   
+    <link rel="icon" href="/Project MPRS/admin/img/212268702.png" type="image/icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+            <h2><i class="fas fa-cogs"></i> Admin Dashboard</h2>
             <ul>
-                <li class="active" data-tab="users"><i class="fas fa-users"></i> Users</li>
+                <li class="active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li data-tab="users"><i class="fas fa-users"></i> Users</li>
                 <li data-tab="transactions"><i class="fas fa-exchange-alt"></i> Transactions</li>
                 <li data-tab="recharge-plans"><i class="fas fa-mobile-alt"></i> Recharge Plans</li>
                 <li data-tab="categories"><i class="fas fa-tags"></i> Categories</li>
                 <li data-tab="kyc"><i class="fas fa-id-card"></i> KYC Requests</li>
                 <li data-tab="payments"><i class="fas fa-money-bill"></i> Payments</li>
-                <li data-tab="user-plans"><i class="fas fa-clipboard-list"></i> User Plans</li>
                 <li data-tab="user-usage"><i class="fas fa-chart-line"></i> User Usage</li>
                 <li data-tab="analytics"><i class="fas fa-chart-bar"></i> Analytics</li>
                 <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
@@ -28,361 +28,169 @@
         </div>
 
         <div class="main-content">
-            <div id="users" class="tab-content active">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                <div class="summary-cards">
+                    <div class="summary-card"><h4>Total Users</h4><p id="total-users">0</p></div>
+                    <div class="summary-card"><h4>Active Plans</h4><p id="active-plans">0</p></div>
+                    <div class="summary-card"><h4>Total Revenue</h4><p id="total-revenue">₹0</p></div>
+                    <div class="summary-card"><h4>Expiring Soon</h4><p id="expiring-soon">0</p></div>
+                </div>
                 <div class="card">
-                    <h3><i class="fas fa-users"></i> Users Management</h3>
-                    <table id="users-table">
+                    <h3>Plans Expiring in 3 Days</h3>
+                    <table id="expiring-table">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Mobile</th>
-                                <th>Username</th>
-                                <th>Join Date</th>
-                                <th>Actions</th>
-                            </tr>
+                            <tr><th>Mobile</th><th>Plan</th><th>Expiry</th><th>Last Amount</th><th>Action</th></tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Users Tab -->
+            <div id="users" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-users"></i> Users</h3>
+                    <table id="users-table">
+                        <thead><tr><th>ID</th><th>Mobile</th><th>Username</th><th>Join Date</th><th>Actions</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <div id="users-pagination" class="pagination"></div>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
             <div id="transactions" class="tab-content">
                 <div class="card">
-                    <h3><i class="fas fa-exchange-alt"></i> Transaction History</h3>
+                    <h3><i class="fas fa-exchange-alt"></i> Transactions</h3>
                     <div class="filter-section">
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" id="date-filter">
-                        </div>
-                        <div class="form-group">
-                            <label>Min Amount</label>
-                            <input type="number" placeholder="Min Amount" id="min-amount">
-                        </div>
-                        <div class="form-group">
-                            <label>Max Amount</label>
-                            <input type="number" placeholder="Max Amount" id="max-amount">
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select id="status-filter">
-                                <option value="">All Status</option>
-                                <option value="SUCCESS">Success</option>
-                                <option value="FAILED">Failed</option>
-                                <option value="PENDING">Pending</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label> </label>
-                            <button class="btn btn-success" onclick="filterTransactions()">
-                                <i class="fas fa-filter"></i> Filter
-                            </button>
-                        </div>
+                        <input type="date" id="trans-date-filter" placeholder="Date">
+                        <input type="number" id="trans-min-amount" placeholder="Min Amount">
+                        <input type="number" id="trans-max-amount" placeholder="Max Amount">
+                        <select id="trans-status-filter">
+                            <option value="">All Status</option>
+                            <option value="SUCCESS">Success</option>
+                            <option value="FAILED">Failed</option>
+                            <option value="PENDING">Pending</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="filterTransactions()">Filter</button>
                     </div>
                     <table id="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>User ID</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
+                    <div id="transactions-pagination" class="pagination"></div>
                 </div>
             </div>
 
+            <!-- Recharge Plans Tab -->
             <div id="recharge-plans" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-mobile-alt"></i> Recharge Plans</h3>
-                    <button class="btn btn-success" onclick="showAddPlanModal()">
-                        <i class="fas fa-plus"></i> Add Plan
-                    </button>
+                    <button class="btn btn-success" onclick="showAddPlanModal()">Add Plan</button>
                     <table id="plans-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Validity</th>
-                                <th>Data</th>
-                                <th>Category</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Validity</th><th>Data</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
                     <div id="plans-pagination" class="pagination"></div>
                 </div>
             </div>
 
+            <!-- Categories Tab -->
             <div id="categories" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-tags"></i> Categories</h3>
-                    <button class="btn btn-success" onclick="showAddCategoryModal()">
-                        <i class="fas fa-plus"></i> Add Category
-                    </button>
+                    <button class="btn btn-success" onclick="showAddCategoryModal()">Add Category</button>
                     <table id="categories-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
                     <div id="categories-pagination" class="pagination"></div>
                 </div>
             </div>
 
+            <!-- KYC Tab -->
             <div id="kyc" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-id-card"></i> KYC Requests</h3>
                     <table id="kyc-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Status</th>
-                                <th>Submitted</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>User ID</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
+                    <div id="kyc-pagination" class="pagination"></div>
                 </div>
             </div>
 
+            <!-- Payments Tab -->
             <div id="payments" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-money-bill"></i> Payments</h3>
                     <table id="payments-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>User ID</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
+                    <div id="payments-pagination" class="pagination"></div>
                 </div>
             </div>
 
-            <div id="user-plans" class="tab-content">
-                <div class="card">
-                    <h3><i class="fas fa-clipboard-list"></i> User Plans</h3>
-                    <table id="user-plans-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Plan Name</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
+            <!-- User Usage Tab -->
             <div id="user-usage" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-chart-line"></i> User Usage</h3>
-                    <table id="user-usage-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Data Used</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
+                    <table id="usage-table">
+                        <thead><tr><th>ID</th><th>User ID</th><th>Data Used</th><th>Date</th></tr></thead>
                         <tbody></tbody>
                     </table>
+                    <div id="usage-pagination" class="pagination"></div>
                 </div>
             </div>
 
+            <!-- Analytics Tab -->
             <div id="analytics" class="tab-content">
                 <div class="card">
-                    <h3><i class="fas fa-chart-bar"></i> Analytics Dashboard</h3>
-                    
+                    <h3><i class="fas fa-chart-bar"></i> Analytics</h3>
                     <div class="report-controls">
                         <div class="date-range">
-                            <label>Date Range:</label>
                             <input type="date" id="start-date">
                             <span>to</span>
                             <input type="date" id="end-date">
                             <button class="btn btn-primary" onclick="applyDateFilter()">Apply</button>
-                            <button class="btn btn-secondary" onclick="resetDateFilter()">Reset</button>
                         </div>
                         <div class="report-actions">
-                            <button class="btn btn-success" onclick="downloadReport('pdf')">
-                                <i class="fas fa-file-pdf"></i> PDF Report
-                            </button>
-                            <button class="btn btn-info" onclick="downloadReport('csv')">
-                                <i class="fas fa-file-csv"></i> CSV Export
-                            </button>
+                            <button class="btn btn-success" onclick="downloadReport('pdf')">PDF</button>
+                            <button class="btn btn-info" onclick="downloadReport('csv')">CSV</button>
                         </div>
                     </div>
-            
                     <div class="analytics-grid">
-                        <!-- Summary Cards -->
-                        <div class="summary-cards">
-                            <div class="summary-card">
-                                <h4>Total Revenue</h4>
-                                <p id="total-revenue">₹0.00</p>
-                                <small>All time</small>
-                            </div>
-                            <div class="summary-card">
-                                <h4>Monthly Revenue</h4>
-                                <p id="monthly-revenue">₹0.00</p>
-                                <small>Current month</small>
-                            </div>
-                            <div class="summary-card">
-                                <h4>Total Users</h4>
-                                <p id="total-users">0</p>
-                                <small>Registered users</small>
-                            </div>
-                            <div class="summary-card">
-                                <h4>Active Plans</h4>
-                                <p id="active-plans">0/0</p>
-                                <small>Active/Total</small>
-                            </div>
-                        </div>
-            
-                        <!-- Main Charts -->
-                        <div class="chart-container wide">
-                            <h4>Revenue Trend (₹)</h4>
-                            <canvas id="revenueTrendChart"></canvas>
-                        </div>
-                        
-                        <div class="chart-container">
-                            <h4>Plan Popularity</h4>
-                            <canvas id="planPopularityChart"></canvas>
-                        </div>
-                        
-                        <div class="chart-container">
-                            <h4>Category Distribution</h4>
-                            <canvas id="categoryChart"></canvas>
-                        </div>
-                        
-                        <div class="chart-container">
-                            <h4>Transaction Status</h4>
-                            <canvas id="transactionStatusChart"></canvas>
-                        </div>
-                        
-                        <div class="chart-container wide">
-                            <h4>Top Performing Plans (₹)</h4>
-                            <canvas id="topPlansChart"></canvas>
-                        </div>
-                        
-                        <div class="chart-container wide">
-                            <h4>User Growth</h4>
-                            <canvas id="userGrowthChart"></canvas>
-                        </div>
+                        <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+                        <div class="chart-container"><canvas id="planPopularityChart"></canvas></div>
+                        <div class="chart-container wide"><canvas id="revenueTrendChart"></canvas></div>
+                        <div class="chart-container"><canvas id="transactionStatusChart"></canvas></div>
                     </div>
                 </div>
             </div>
-
-
-    <div id="emailModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Send Email Notification</h3>
-                <span class="close" onclick="closeModal('emailModal')">×</span>
-            </div>
-            <form id="emailForm">
-                <div class="form-group">
-                    <label for="emailRecipient">Recipient Email</label>
-                    <input type="email" id="emailRecipient" placeholder="Enter recipient email" required>
-                </div>
-                <div class="form-group">
-                    <label for="emailMobile">Mobile Number</label>
-                    <input type="text" id="emailMobile" placeholder="Enter mobile number" required>
-                </div>
-                <div class="form-group">
-                    <label for="emailPlan">Plan Name</label>
-                    <input type="text" id="emailPlan" placeholder="Enter plan name" required>
-                </div>
-                <div class="form-group">
-                    <label for="emailExpiry">Expiry Date</label>
-                    <input type="date" id="emailExpiry" required>
-                </div>
-                <div class="form-group">
-                    <label for="emailSubject">Subject</label>
-                    <input type="text" id="emailSubject" placeholder="Enter email subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="emailMessage">Message</label>
-                    <textarea id="emailMessage" placeholder="Enter your message (optional)"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('emailModal')">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-paper-plane"></i> Send Email
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 
+    <!-- Modals -->
     <div id="planModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="planModalTitle">Add New Plan</h3>
+                <h3 id="planModalTitle">Add Plan</h3>
                 <span class="close" onclick="closeModal('planModal')">×</span>
             </div>
             <form id="planForm">
                 <input type="hidden" id="planId">
-                <div class="form-group">
-                    <label for="planName">Plan Name</label>
-                    <input type="text" id="planName" placeholder="Enter plan name" required>
-                </div>
-                <div class="form-group">
-                    <label for="planPrice">Price (₹)</label>
-                    <input type="number" id="planPrice" placeholder="Enter price" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="planValidity">Validity (days)</label>
-                    <input type="number" id="planValidity" placeholder="Enter validity in days" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="planData">Data (GB)</label>
-                    <input type="number" id="planData" placeholder="Enter data in GB" min="0" step="0.1" required>
-                </div>
-                <div class="form-group">
-                    <label for="planCategory">Category</label>
-                    <select id="planCategory" required></select>
-                </div>
-                <div class="form-group">
-                    <label for="planActive">Status</label>
-                    <select id="planActive" required>
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="planDescription">Description</label>
-                    <textarea id="planDescription" placeholder="Enter plan description (optional)"></textarea>
-                </div>
+                <div class="form-group"><label>Name</label><input type="text" id="planName" required></div>
+                <div class="form-group"><label>Price (₹)</label><input type="number" id="planPrice" step="0.01" required></div>
+                <div class="form-group"><label>Validity (days)</label><input type="number" id="planValidity" required></div>
+                <div class="form-group"><label>Data (GB)</label><input type="number" id="planData" step="0.1" required></div>
+                <div class="form-group"><label>Category</label><select id="planCategory" required></select></div>
+                <div class="form-group"><label>Status</label><select id="planActive"><option value="true">Active</option><option value="false">Inactive</option></select></div>
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('planModal')">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Plan
-                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('planModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                 </div>
             </form>
         </div>
@@ -391,61 +199,45 @@
     <div id="categoryModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="categoryModalTitle">Add New Category</h3>
+                <h3 id="categoryModalTitle">Add Category</h3>
                 <span class="close" onclick="closeModal('categoryModal')">×</span>
             </div>
             <form id="categoryForm">
                 <input type="hidden" id="categoryId">
-                <div class="form-group">
-                    <label for="categoryName">Category Name</label>
-                    <input type="text" id="categoryName" placeholder="Enter category name" required>
-                </div>
-                <div class="form-group">
-                    <label for="categoryDescription">Description</label>
-                    <textarea id="categoryDescription" placeholder="Enter category description (optional)"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="categoryActive">Status</label>
-                    <select id="categoryActive" required>
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
-                </div>
+                <div class="form-group"><label>Name</label><input type="text" id="categoryName" required></div>
+                <div class="form-group"><label>Status</label><select id="categoryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div>
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('categoryModal')">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Category
-                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('categoryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="detailsModal" class="modal">
+    <div id="emailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="detailsModalTitle">Details</h3>
-                <span class="close" onclick="closeModal('detailsModal')">×</span>
+                <h3>Send Notification</h3>
+                <span class="close" onclick="closeModal('emailModal')">×</span>
             </div>
-            <div id="detailsModalBody" class="modal-body"></div>
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('detailsModal')">
-                    <i class="fas fa-times"></i> Close
-                </button>
-            </div>
+            <form id="emailForm">
+                <div class="form-group"><label>Email</label><input type="email" id="emailRecipient" required></div>
+                <div class="form-group"><label>Mobile</label><input type="text" id="emailMobile" required></div>
+                <div class="form-group"><label>Subject</label><input type="text" id="emailSubject" required></div>
+                <div class="form-group"><label>Message</label><textarea id="emailMessage"></textarea></div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('emailModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Send</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <div id="toast" class="toast">
         <i id="toast-icon" class="fas fa-check-circle"></i>
-        <span id="toast-message">Operation successful</span>
+        <span id="toast-message"></span>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <script src="/Project MPRS/admin/js/admin.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   
+    <script src="/Project MPRS/admin/js/admin.js"></script>
 </body>
 </html>
